@@ -1,5 +1,7 @@
 # MocoPo
 
+⚠️ WARNING VIBE CODING ⚠️
+
 A Crystal library for building MCP (Model Context Protocol) servers.
 
 ## Overview
