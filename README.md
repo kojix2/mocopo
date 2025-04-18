@@ -25,8 +25,49 @@ and provides a DSL-style API for intuitive management and extension of tools, re
 ```crystal
 require "mocopo"
 
-# TODO: Add example for server startup and tool registration
+# Create a new MCP server
+server = MocoPo::Server.new(
+  name: "MyMCPServer",
+  version: "1.0.0"
+)
+
+# Register a tool with arguments and execution callback
+greet_tool = server.register_tool("greet", "Greet someone by name")
+greet_tool
+  .argument_string("name", true, "Name to greet")
+  .on_execute do |args|
+    name = args.try &.["name"]?.try &.as_s || "World"
+    {
+      "content" => [
+        {
+          "type" => "text",
+          "text" => "Hello, #{name}!"
+        }
+      ] of Hash(String, String),
+      "isError" => "false"
+    }
+  end
+
+# Register a resource with content callback
+readme_resource = server.register_resource(
+  uri: "file:///readme",
+  name: "README",
+  description: "Project README file",
+  mime_type: "text/markdown"
+)
+readme_resource.on_read do
+  MocoPo::ResourceContent.text(
+    uri: "file:///readme",
+    text: "# My MCP Server\n\nThis is a sample README.",
+    mime_type: "text/markdown"
+  )
+end
+
+# Start the server on port 3000
+server.start
 ```
+
+For more examples, see the [examples](examples/) directory.
 
 ## Development
 
