@@ -1,0 +1,18 @@
+name: mocopo
+version: 0.1.0
+
+authors:
+  - kojix2 <2xijok@gmail.com>
+
+crystal: '>= 1.15.1'
+
+license: MIT
+
+description: |
+  MocoPo - A Crystal library for building MCP (Model Context Protocol) servers.
+  Provides DSL-style APIs and integrates with Kemal for high-performance, lightweight MCP server development.
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+    version: "~> 1.4"
