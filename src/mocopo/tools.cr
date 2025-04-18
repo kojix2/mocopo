@@ -18,16 +18,21 @@ module MocoPo
     # Execution callback
     @callback : Proc(Hash(String, JSON::Any)?, Context?, Hash(String, String | Array(Hash(String, String))))?
 
+    # List of allowed client IDs (for access control)
+    property allowed_clients : Array(String)?
+
     # Initialize a new tool
     def initialize(@name : String, @description : String, @input_schema : Hash(String, JSON::Any), &callback : (Hash(String, JSON::Any)?, Context?) -> Hash(String, String | Array(Hash(String, String))))
       @callback = callback
       @argument_builder = ArgumentBuilder.new
+      @allowed_clients = nil
     end
 
     # Initialize a new tool without callback
     def initialize(@name : String, @description : String, @input_schema : Hash(String, JSON::Any))
       @callback = nil
       @argument_builder = ArgumentBuilder.new
+      @allowed_clients = nil
     end
 
     # Set the execution callback
@@ -78,10 +83,95 @@ module MocoPo
       @input_schema = @argument_builder.to_json_schema
     end
 
+    # Validate arguments against the input schema
+    private def validate_arguments(arguments : Hash(String, JSON::Any)?) : Array(String)
+      errors = [] of String
+      schema = @input_schema
+
+      # Only basic validation: type and required fields
+      if schema["type"]?.try(&.as_s) == "object"
+        # Check required fields
+        if schema["required"]?.is_a?(JSON::Any) && schema["required"].as_a?
+          required_fields = schema["required"].as_a.map(&.as_s)
+          required_fields.each do |key|
+            unless arguments && arguments.has_key?(key)
+              errors << "Missing required argument: #{key}"
+            end
+          end
+        end
+
+        # Type checking (string, number, boolean)
+        if arguments && schema["properties"]?.is_a?(JSON::Any) && schema["properties"].as_h?
+          properties = schema["properties"].as_h
+          arguments.each do |key, value|
+            if properties.has_key?(key) && properties[key].as_h?
+              prop = properties[key].as_h
+              if prop["type"]?.is_a?(JSON::Any)
+                prop_type = prop["type"].as_s
+                case prop_type
+                when "string"
+                  unless value.as_s?
+                    errors << "Argument '#{key}' must be a string"
+                  end
+                when "number"
+                  unless value.as_i? || value.as_f?
+                    errors << "Argument '#{key}' must be a number"
+                  end
+                when "boolean"
+                  unless value.as_bool?
+                    errors << "Argument '#{key}' must be a boolean"
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+      errors
+    end
+
     # Execute the tool with the given arguments
     def execute(arguments : Hash(String, JSON::Any)?, context : Context? = nil) : Hash(String, String | Array(Hash(String, String)))
-      if @callback
-        @callback.not_nil!.call(arguments, context)
+      # Access control: check allowed_clients if set
+      if @allowed_clients && context
+        unless @allowed_clients.not_nil!.includes?(context.client_id)
+          return {
+            "content" => [
+              {
+                "type" => "text",
+                "text" => "Access denied: client_id '#{context.client_id}' is not authorized to use this tool.",
+              },
+            ] of Hash(String, String),
+            "isError" => "true",
+          }
+        end
+      end
+
+      validation_errors = validate_arguments(arguments)
+      if !validation_errors.empty?
+        {
+          "content" => [
+            {
+              "type" => "text",
+              "text" => "Input validation error(s): " + validation_errors.join(", "),
+            },
+          ] of Hash(String, String),
+          "isError" => "true",
+        }
+      elsif @callback
+        # Sanitize output: HTML-escape all text fields in the result
+        raw_result = @callback.not_nil!.call(arguments, context)
+        if raw_result["content"]?.is_a?(Array)
+          sanitized_content = raw_result["content"].as(Array(Hash(String, String))).map do |item|
+            if item["type"]? == "text" && item["text"]?
+              item = item.dup
+              item["text"] = html_escape(item["text"])
+            end
+            item
+          end
+          raw_result["content"] = sanitized_content
+        end
+        raw_result
       else
         # Default response if no callback is set
         {
@@ -94,6 +184,15 @@ module MocoPo
           "isError" => "false",
         }
       end
+    end
+
+    # Simple HTML escape utility for output sanitization
+    private def html_escape(text : String) : String
+      text.gsub("&", "&amp;")
+        .gsub("<", "&lt;")
+        .gsub(">", "&gt;")
+        .gsub("\"", "&quot;")
+        .gsub("'", "&#39;")
     end
 
     # Convert to JSON-compatible Hash
@@ -111,10 +210,60 @@ module MocoPo
     # Server instance
     @server : Server?
 
+    # Rate limiting: {client_id => [timestamps]}
+    @rate_limit_log : Hash(String, Array(Time))
+
+    # Rate limit settings
+    RATE_LIMIT_WINDOW    = 10 # seconds
+    RATE_LIMIT_MAX_CALLS =  5
+
     # Initialize a new tool manager
     def initialize
       @tools = {} of String => Tool
       @server = nil
+      @rate_limit_log = {} of String => Array(Time)
+    end
+
+    # Execute a tool by name with rate limiting.
+    # Returns an error if the tool is not found, or if the client exceeds the rate limit.
+    # This method should be called by handlers to enforce security best practices.
+    def execute_tool(name : String, arguments : Hash(String, JSON::Any)?, context : Context? = nil) : Hash(String, String | Array(Hash(String, String)))
+      tool = @tools[name]?
+      unless tool
+        return {
+          "content" => [
+            {
+              "type" => "text",
+              "text" => "Tool not found: #{name}",
+            },
+          ] of Hash(String, String),
+          "isError" => "true",
+        }
+      end
+
+      # Rate limiting
+      if context
+        client_id = context.client_id
+        now = Time.utc
+        log = @rate_limit_log.has_key?(client_id) ? @rate_limit_log[client_id] : [] of Time
+        # Remove old entries
+        log = log.select { |t| (now - t).total_seconds < RATE_LIMIT_WINDOW }
+        if log.size >= RATE_LIMIT_MAX_CALLS
+          return {
+            "content" => [
+              {
+                "type" => "text",
+                "text" => "Rate limit exceeded: max #{RATE_LIMIT_MAX_CALLS} calls per #{RATE_LIMIT_WINDOW} seconds.",
+              },
+            ] of Hash(String, String),
+            "isError" => "true",
+          }
+        end
+        log << now
+        @rate_limit_log[client_id] = log
+      end
+
+      tool.execute(arguments, context)
     end
 
     # Set the server instance
