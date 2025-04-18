@@ -3,6 +3,7 @@ require "json"
 require "./mocopo/tools"
 require "./mocopo/resources"
 require "./mocopo/arguments"
+require "./mocopo/prompts"
 
 # MocoPo - A Crystal library for building MCP (Model Context Protocol) servers
 module MocoPo
@@ -19,10 +20,14 @@ module MocoPo
     # Resource manager
     getter resource_manager : ResourceManager
 
+    # Prompt manager
+    getter prompt_manager : PromptManager
+
     # Initialize a new MCP server
     def initialize(@name : String, @version : String)
       @tool_manager = ToolManager.new
       @resource_manager = ResourceManager.new
+      @prompt_manager = PromptManager.new
       setup_routes
     end
 
@@ -85,6 +90,27 @@ module MocoPo
       register_resource(uri, name, description, mime_type, size) { |_| }
     end
 
+    # Register a prompt with a block
+    def register_prompt(name : String, description : String? = nil, &block : Prompt -> _)
+      # Create a prompt
+      prompt = Prompt.new(name, description)
+
+      # Register the prompt
+      @prompt_manager.register(prompt)
+
+      # Yield the prompt to the block
+      yield prompt
+
+      # Return the prompt for further configuration
+      prompt
+    end
+
+    # Register a prompt without a block
+    def register_prompt(name : String, description : String? = nil)
+      # Call the block version with an empty block
+      register_prompt(name, description) { |_| }
+    end
+
     private def setup_routes
       # JSON-RPC endpoint
       post "/mcp" do |env|
@@ -139,6 +165,10 @@ module MocoPo
         handle_resources_read(id, params)
       when "resources/subscribe"
         handle_resources_subscribe(id, params)
+      when "prompts/list"
+        handle_prompts_list(id, params)
+      when "prompts/get"
+        handle_prompts_get(id, params)
       else
         error_response(-32601, "Method not found: #{method}", id)
       end
@@ -166,6 +196,9 @@ module MocoPo
               "listChanged" => true,
             },
             "tools" => {
+              "listChanged" => true,
+            },
+            "prompts" => {
               "listChanged" => true,
             },
           },
@@ -313,6 +346,61 @@ module MocoPo
           "subscribed" => true,
         },
       }
+    end
+
+    # Handle prompts/list request
+    private def handle_prompts_list(id, params)
+      # Get all prompts
+      prompts = @prompt_manager.list
+
+      # Convert to JSON-compatible format
+      prompts_json = prompts.map(&.to_json_object)
+
+      # Return the list of prompts
+      {
+        "jsonrpc" => "2.0",
+        "id"      => id,
+        "result"  => {
+          "prompts" => prompts_json,
+        },
+      }
+    end
+
+    # Handle prompts/get request
+    private def handle_prompts_get(id, params)
+      # Extract prompt name and arguments
+      name = params.try &.["name"]?.try &.as_s
+      arguments = params.try &.["arguments"]?
+
+      # Check if prompt exists
+      unless name && @prompt_manager.exists?(name)
+        return error_response(-32602, "Unknown prompt: #{name || "missing name"}", id)
+      end
+
+      # Get the prompt
+      prompt = @prompt_manager.get(name).not_nil!
+
+      begin
+        # Convert arguments to Hash(String, JSON::Any)? if present
+        args = arguments.try &.as_h?
+
+        # Execute the prompt
+        messages = prompt.execute(args)
+        messages_json = messages.map(&.to_json_object)
+
+        # Return the result
+        {
+          "jsonrpc" => "2.0",
+          "id"      => id,
+          "result"  => {
+            "description" => prompt.description,
+            "messages"    => messages_json,
+          },
+        }
+      rescue ex
+        # Handle execution errors
+        error_response(-32603, "Error executing prompt: #{ex.message}", id)
+      end
     end
 
     # Create a JSON-RPC error response
