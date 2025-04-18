@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.15.1">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="mocopo">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="mocopo">
+  <title>MocoPo::JsonRpcNotification - mocopo main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          mocopo
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="mocopo/MocoPo" data-name="mocopo">
+      <a href="../MocoPo.html">MocoPo</a>
+      
+        <ul>
+  
+  <li class=" " data-id="mocopo/MocoPo/Argument" data-name="mocopo::argument">
+      <a href="../MocoPo/Argument.html">Argument</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ArgumentBuilder" data-name="mocopo::argumentbuilder">
+      <a href="../MocoPo/ArgumentBuilder.html">ArgumentBuilder</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/BaseHandler" data-name="mocopo::basehandler">
+      <a href="../MocoPo/BaseHandler.html">BaseHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/CancellationHandler" data-name="mocopo::cancellationhandler">
+      <a href="../MocoPo/CancellationHandler.html">CancellationHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/CancellationManager" data-name="mocopo::cancellationmanager">
+      <a href="../MocoPo/CancellationManager.html">CancellationManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/CancellationToken" data-name="mocopo::cancellationtoken">
+      <a href="../MocoPo/CancellationToken.html">CancellationToken</a>
+      
+    </li>
+  
+  <li class="parent " data-id="mocopo/MocoPo/Completion" data-name="mocopo::completion">
+      <a href="../MocoPo/Completion.html">Completion</a>
+      
+        <ul>
+  
+  <li class=" " data-id="mocopo/MocoPo/Completion/Argument" data-name="mocopo::completion::argument">
+      <a href="../MocoPo/Completion/Argument.html">Argument</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Completion/Reference" data-name="mocopo::completion::reference">
+      <a href="../MocoPo/Completion/Reference.html">Reference</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Completion/ReferenceType" data-name="mocopo::completion::referencetype">
+      <a href="../MocoPo/Completion/ReferenceType.html">ReferenceType</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Completion/Result" data-name="mocopo::completion::result">
+      <a href="../MocoPo/Completion/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/CompletionHandler" data-name="mocopo::completionhandler">
+      <a href="../MocoPo/CompletionHandler.html">CompletionHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ContentType" data-name="mocopo::contenttype">
+      <a href="../MocoPo/ContentType.html">ContentType</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Context" data-name="mocopo::context">
+      <a href="../MocoPo/Context.html">Context</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/GreedySamplingMethod" data-name="mocopo::greedysamplingmethod">
+      <a href="../MocoPo/GreedySamplingMethod.html">GreedySamplingMethod</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/HandlerManager" data-name="mocopo::handlermanager">
+      <a href="../MocoPo/HandlerManager.html">HandlerManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Handlers" data-name="mocopo::handlers">
+      <a href="../MocoPo/Handlers.html">Handlers</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ImageContent" data-name="mocopo::imagecontent">
+      <a href="../MocoPo/ImageContent.html">ImageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/InitializeHandler" data-name="mocopo::initializehandler">
+      <a href="../MocoPo/InitializeHandler.html">InitializeHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonArray" data-name="mocopo::jsonarray">
+      <a href="../MocoPo/JsonArray.html">JsonArray</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonObject" data-name="mocopo::jsonobject">
+      <a href="../MocoPo/JsonObject.html">JsonObject</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonPrimitive" data-name="mocopo::jsonprimitive">
+      <a href="../MocoPo/JsonPrimitive.html">JsonPrimitive</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcError" data-name="mocopo::jsonrpcerror">
+      <a href="../MocoPo/JsonRpcError.html">JsonRpcError</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcErrorData" data-name="mocopo::jsonrpcerrordata">
+      <a href="../MocoPo/JsonRpcErrorData.html">JsonRpcErrorData</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcErrorResponse" data-name="mocopo::jsonrpcerrorresponse">
+      <a href="../MocoPo/JsonRpcErrorResponse.html">JsonRpcErrorResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcId" data-name="mocopo::jsonrpcid">
+      <a href="../MocoPo/JsonRpcId.html">JsonRpcId</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcMessage" data-name="mocopo::jsonrpcmessage">
+      <a href="../MocoPo/JsonRpcMessage.html">JsonRpcMessage</a>
+      
+    </li>
+  
+  <li class=" current" data-id="mocopo/MocoPo/JsonRpcNotification" data-name="mocopo::jsonrpcnotification">
+      <a href="../MocoPo/JsonRpcNotification.html">JsonRpcNotification</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcNotificationParams" data-name="mocopo::jsonrpcnotificationparams">
+      <a href="../MocoPo/JsonRpcNotificationParams.html">JsonRpcNotificationParams</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcParams" data-name="mocopo::jsonrpcparams">
+      <a href="../MocoPo/JsonRpcParams.html">JsonRpcParams</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcRequest" data-name="mocopo::jsonrpcrequest">
+      <a href="../MocoPo/JsonRpcRequest.html">JsonRpcRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcResponse" data-name="mocopo::jsonrpcresponse">
+      <a href="../MocoPo/JsonRpcResponse.html">JsonRpcResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcResult" data-name="mocopo::jsonrpcresult">
+      <a href="../MocoPo/JsonRpcResult.html">JsonRpcResult</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonRpcSuccessResponse" data-name="mocopo::jsonrpcsuccessresponse">
+      <a href="../MocoPo/JsonRpcSuccessResponse.html">JsonRpcSuccessResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/JsonValue" data-name="mocopo::jsonvalue">
+      <a href="../MocoPo/JsonValue.html">JsonValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/MessageContent" data-name="mocopo::messagecontent">
+      <a href="../MocoPo/MessageContent.html">MessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ModelHint" data-name="mocopo::modelhint">
+      <a href="../MocoPo/ModelHint.html">ModelHint</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ModelPreferences" data-name="mocopo::modelpreferences">
+      <a href="../MocoPo/ModelPreferences.html">ModelPreferences</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/NotificationManager" data-name="mocopo::notificationmanager">
+      <a href="../MocoPo/NotificationManager.html">NotificationManager</a>
+      
+    </li>
+  
+  <li class="parent " data-id="mocopo/MocoPo/Pagination" data-name="mocopo::pagination">
+      <a href="../MocoPo/Pagination.html">Pagination</a>
+      
+        <ul>
+  
+  <li class=" " data-id="mocopo/MocoPo/Pagination/Cursor" data-name="mocopo::pagination::cursor">
+      <a href="../MocoPo/Pagination/Cursor.html">Cursor</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Prompt" data-name="mocopo::prompt">
+      <a href="../MocoPo/Prompt.html">Prompt</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/PromptArgument" data-name="mocopo::promptargument">
+      <a href="../MocoPo/PromptArgument.html">PromptArgument</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/PromptManager" data-name="mocopo::promptmanager">
+      <a href="../MocoPo/PromptManager.html">PromptManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/PromptMessage" data-name="mocopo::promptmessage">
+      <a href="../MocoPo/PromptMessage.html">PromptMessage</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/PromptsHandler" data-name="mocopo::promptshandler">
+      <a href="../MocoPo/PromptsHandler.html">PromptsHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Resource" data-name="mocopo::resource">
+      <a href="../MocoPo/Resource.html">Resource</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ResourceContent" data-name="mocopo::resourcecontent">
+      <a href="../MocoPo/ResourceContent.html">ResourceContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ResourceContentRef" data-name="mocopo::resourcecontentref">
+      <a href="../MocoPo/ResourceContentRef.html">ResourceContentRef</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ResourceManager" data-name="mocopo::resourcemanager">
+      <a href="../MocoPo/ResourceManager.html">ResourceManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ResourcesHandler" data-name="mocopo::resourceshandler">
+      <a href="../MocoPo/ResourcesHandler.html">ResourcesHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Root" data-name="mocopo::root">
+      <a href="../MocoPo/Root.html">Root</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/RootDirectoryListing" data-name="mocopo::rootdirectorylisting">
+      <a href="../MocoPo/RootDirectoryListing.html">RootDirectoryListing</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/RootError" data-name="mocopo::rooterror">
+      <a href="../MocoPo/RootError.html">RootError</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/RootFileContent" data-name="mocopo::rootfilecontent">
+      <a href="../MocoPo/RootFileContent.html">RootFileContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/RootFileInfo" data-name="mocopo::rootfileinfo">
+      <a href="../MocoPo/RootFileInfo.html">RootFileInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/RootManager" data-name="mocopo::rootmanager">
+      <a href="../MocoPo/RootManager.html">RootManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/RootsHandler" data-name="mocopo::rootshandler">
+      <a href="../MocoPo/RootsHandler.html">RootsHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingError" data-name="mocopo::samplingerror">
+      <a href="../MocoPo/SamplingError.html">SamplingError</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingHandler" data-name="mocopo::samplinghandler">
+      <a href="../MocoPo/SamplingHandler.html">SamplingHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingManager" data-name="mocopo::samplingmanager">
+      <a href="../MocoPo/SamplingManager.html">SamplingManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingMessage" data-name="mocopo::samplingmessage">
+      <a href="../MocoPo/SamplingMessage.html">SamplingMessage</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingMessageContent" data-name="mocopo::samplingmessagecontent">
+      <a href="../MocoPo/SamplingMessageContent.html">SamplingMessageContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingMetadata" data-name="mocopo::samplingmetadata">
+      <a href="../MocoPo/SamplingMetadata.html">SamplingMetadata</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingMethod" data-name="mocopo::samplingmethod">
+      <a href="../MocoPo/SamplingMethod.html">SamplingMethod</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingRequest" data-name="mocopo::samplingrequest">
+      <a href="../MocoPo/SamplingRequest.html">SamplingRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingResponse" data-name="mocopo::samplingresponse">
+      <a href="../MocoPo/SamplingResponse.html">SamplingResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/SamplingStopSequences" data-name="mocopo::samplingstopsequences">
+      <a href="../MocoPo/SamplingStopSequences.html">SamplingStopSequences</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Server" data-name="mocopo::server">
+      <a href="../MocoPo/Server.html">Server</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/TemperatureSamplingMethod" data-name="mocopo::temperaturesamplingmethod">
+      <a href="../MocoPo/TemperatureSamplingMethod.html">TemperatureSamplingMethod</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/TextContent" data-name="mocopo::textcontent">
+      <a href="../MocoPo/TextContent.html">TextContent</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Tool" data-name="mocopo::tool">
+      <a href="../MocoPo/Tool.html">Tool</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ToolManager" data-name="mocopo::toolmanager">
+      <a href="../MocoPo/ToolManager.html">ToolManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/ToolsHandler" data-name="mocopo::toolshandler">
+      <a href="../MocoPo/ToolsHandler.html">ToolsHandler</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/TopKSamplingMethod" data-name="mocopo::topksamplingmethod">
+      <a href="../MocoPo/TopKSamplingMethod.html">TopKSamplingMethod</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/TopPSamplingMethod" data-name="mocopo::toppsamplingmethod">
+      <a href="../MocoPo/TopPSamplingMethod.html">TopPSamplingMethod</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    class
+  </span> MocoPo::<wbr>JsonRpcNotification
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../MocoPo/JsonRpcNotification.html">MocoPo::JsonRpcNotification</a></li><li class="superclass"><a href="../MocoPo/JsonRpcMessage.html">MocoPo::JsonRpcMessage</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>JSON-RPC notification</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/kojix2/mocopo/blob/3cd1435cf60c3b126c38b6d929671aed5c393b1b/src/mocopo/json_rpc.cr#L94" target="_blank">
+        mocopo/json_rpc.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28method%3AString%2Cparams%3ANil%7CHash%28String%2CMocoPo%3A%3AJsonValue%29%3Dnil%29-class-method" class="signature"><strong>.new</strong>(method : String, params : Nil | Hash(String, MocoPo::JsonValue) = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Initialize a new notification</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#method%3AString-instance-method" class="signature"><strong>#method</strong> : String</a>
+        
+          <div class="summary"><p>Notification method</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#method%3D%28method%3AString%29-instance-method" class="signature"><strong>#method=</strong>(method : String)</a>
+        
+          <div class="summary"><p>Notification method</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#params%3AJsonRpcNotificationParams-instance-method" class="signature"><strong>#params</strong> : JsonRpcNotificationParams</a>
+        
+          <div class="summary"><p>Notification parameters</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#params%3D%28params%3AJsonRpcNotificationParams%29-instance-method" class="signature"><strong>#params=</strong>(params : JsonRpcNotificationParams)</a>
+        
+          <div class="summary"><p>Notification parameters</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_json_object%3AJsonObject-instance-method" class="signature"><strong>#to_json_object</strong> : JsonObject</a>
+        
+          <div class="summary"><p>Convert to JSON-compatible Hash</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <div class="methods-inherited">
+    
+      
+
+  <h3>Instance methods inherited from class <code><a href="../MocoPo/JsonRpcMessage.html">MocoPo::JsonRpcMessage</a></code></h3>
+  
+  
+    <a href="../MocoPo/JsonRpcMessage.html#jsonrpc%3AString-instance-method" class="tooltip">
+      <span>jsonrpc : String</span>
+    jsonrpc</a>, 
+    
+  
+    <a href="../MocoPo/JsonRpcMessage.html#jsonrpc%3D%28jsonrpc%3AString%29-instance-method" class="tooltip">
+      <span>jsonrpc=(jsonrpc : String)</span>
+    jsonrpc=</a>, 
+    
+  
+    <a href="../MocoPo/JsonRpcMessage.html#to_json_object%3AJsonObject-instance-method" class="tooltip">
+      <span>to_json_object : JsonObject</span>
+    to_json_object</a>
+    
+  
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
+
+  
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(method:String,params:Nil|Hash(String,MocoPo::JsonValue)=nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(method : String, params : Nil | Hash(String, <a href="../MocoPo/JsonValue.html">MocoPo::JsonValue</a>) = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#new%28method%3AString%2Cparams%3ANil%7CHash%28String%2CMocoPo%3A%3AJsonValue%29%3Dnil%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Initialize a new notification</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/3cd1435cf60c3b126c38b6d929671aed5c393b1b/src/mocopo/json_rpc.cr#L102" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="method:String-instance-method">
+      <div class="signature">
+        
+        def <strong>method</strong> : String
+
+        <a class="method-permalink" href="#method%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Notification method</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/3cd1435cf60c3b126c38b6d929671aed5c393b1b/src/mocopo/json_rpc.cr#L96" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="method=(method:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>method=</strong>(method : String)
+
+        <a class="method-permalink" href="#method%3D%28method%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Notification method</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/3cd1435cf60c3b126c38b6d929671aed5c393b1b/src/mocopo/json_rpc.cr#L96" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="params:JsonRpcNotificationParams-instance-method">
+      <div class="signature">
+        
+        def <strong>params</strong> : <a href="../MocoPo/JsonRpcNotificationParams.html">JsonRpcNotificationParams</a>
+
+        <a class="method-permalink" href="#params%3AJsonRpcNotificationParams-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Notification parameters</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/3cd1435cf60c3b126c38b6d929671aed5c393b1b/src/mocopo/json_rpc.cr#L99" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="params=(params:JsonRpcNotificationParams)-instance-method">
+      <div class="signature">
+        
+        def <strong>params=</strong>(params : <a href="../MocoPo/JsonRpcNotificationParams.html">JsonRpcNotificationParams</a>)
+
+        <a class="method-permalink" href="#params%3D%28params%3AJsonRpcNotificationParams%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Notification parameters</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/3cd1435cf60c3b126c38b6d929671aed5c393b1b/src/mocopo/json_rpc.cr#L99" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_json_object:JsonObject-instance-method">
+      <div class="signature">
+        
+        def <strong>to_json_object</strong> : <a href="../MocoPo/JsonObject.html">JsonObject</a>
+
+        <a class="method-permalink" href="#to_json_object%3AJsonObject-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Convert to JSON-compatible Hash</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/3cd1435cf60c3b126c38b6d929671aed5c393b1b/src/mocopo/json_rpc.cr#L106" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+</div>
+
+</body>
+</html>
