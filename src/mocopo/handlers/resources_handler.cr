@@ -3,16 +3,26 @@ module MocoPo
   class ResourcesHandler < BaseHandler
     # Handle resources/list request
     def handle_list(id : JsonRpcId, params : JsonRpcParams) : JsonObject
+      # Extract cursor from params
+      cursor = params.try &.["cursor"]?.try &.as_s
+
       # Get all resources
       resources = @server.resource_manager.list
 
+      # Apply pagination
+      page_resources, next_cursor = Pagination.paginate(resources, cursor)
+
       # Convert to JSON-compatible format
-      resources_json = resources.map(&.to_json_object)
+      resources_json = page_resources.map(&.to_json_object)
+
+      # Build response
+      response = {"resources" => resources_json}
+
+      # Add next cursor if there are more results
+      response["nextCursor"] = next_cursor if next_cursor
 
       # Return the list of resources
-      success_response(id, {
-        "resources" => resources_json,
-      })
+      success_response(id, response)
     end
 
     # Handle resources/read request

@@ -3,16 +3,26 @@ module MocoPo
   class ToolsHandler < BaseHandler
     # Handle tools/list request
     def handle_list(id : JsonRpcId, params : JsonRpcParams) : JsonObject
+      # Extract cursor from params
+      cursor = params.try &.["cursor"]?.try &.as_s
+
       # Get all tools
       tools = @server.tool_manager.list
 
+      # Apply pagination
+      page_tools, next_cursor = Pagination.paginate(tools, cursor)
+
       # Convert to JSON-compatible format
-      tools_json = tools.map(&.to_json_object)
+      tools_json = page_tools.map(&.to_json_object)
+
+      # Build response
+      response = {"tools" => tools_json}
+
+      # Add next cursor if there are more results
+      response["nextCursor"] = next_cursor if next_cursor
 
       # Return the list of tools
-      success_response(id, {
-        "tools" => tools_json,
-      })
+      success_response(id, response)
     end
 
     # Handle tools/call request

@@ -3,16 +3,26 @@ module MocoPo
   class PromptsHandler < BaseHandler
     # Handle prompts/list request
     def handle_list(id : JsonRpcId, params : JsonRpcParams) : JsonObject
+      # Extract cursor from params
+      cursor = params.try &.["cursor"]?.try &.as_s
+
       # Get all prompts
       prompts = @server.prompt_manager.list
 
+      # Apply pagination
+      page_prompts, next_cursor = Pagination.paginate(prompts, cursor)
+
       # Convert to JSON-compatible format
-      prompts_json = prompts.map(&.to_json_object)
+      prompts_json = page_prompts.map(&.to_json_object)
+
+      # Build response
+      response = {"prompts" => prompts_json}
+
+      # Add next cursor if there are more results
+      response["nextCursor"] = next_cursor if next_cursor
 
       # Return the list of prompts
-      success_response(id, {
-        "prompts" => prompts_json,
-      })
+      success_response(id, response)
     end
 
     # Handle prompts/get request
