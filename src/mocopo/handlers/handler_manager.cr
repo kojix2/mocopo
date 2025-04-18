@@ -26,6 +26,7 @@ module MocoPo
       prompts_handler = PromptsHandler.new(@server)
       sampling_handler = SamplingHandler.new(@server)
       roots_handler = RootsHandler.new(@server)
+      cancellation_handler = CancellationHandler.new(@server)
 
       # Register handlers
       register_handler("initialize", initialize_handler)
@@ -34,6 +35,7 @@ module MocoPo
       register_handler("prompts", prompts_handler)
       register_handler("sampling", sampling_handler)
       register_handler("roots", roots_handler)
+      register_handler("cancellation", cancellation_handler)
 
       # Register method mappings
       register_method("initialize", initialize_handler, :handle)
@@ -54,6 +56,10 @@ module MocoPo
       register_method("roots/deleteFile", roots_handler, :handle_delete_file)
       register_method("roots/createDirectory", roots_handler, :handle_create_directory)
       register_method("roots/deleteDirectory", roots_handler, :handle_delete_directory)
+      register_method("cancellation/create", cancellation_handler, :handle_create)
+      register_method("cancellation/cancel", cancellation_handler, :handle_cancel)
+      register_method("cancellation/status", cancellation_handler, :handle_status)
+      register_method("cancellation/list", cancellation_handler, :handle_list)
     end
 
     # Register a handler
@@ -103,6 +109,12 @@ module MocoPo
           handler.handle_create_directory(id, params)
         when :handle_delete_directory
           handler.handle_delete_directory(id, params)
+        when :handle_create
+          handler.handle_create(id, params)
+        when :handle_cancel
+          handler.handle_cancel(id, params)
+        when :handle_status
+          handler.handle_status(id, params)
         else
           handler.handle(id, params)
         end

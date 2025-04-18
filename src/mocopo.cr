@@ -8,6 +8,7 @@ require "./mocopo/prompts"
 require "./mocopo/context"
 require "./mocopo/sampling"
 require "./mocopo/roots"
+require "./mocopo/cancellation"
 require "./mocopo/handlers"
 require "./mocopo/json_rpc"
 
@@ -48,6 +49,7 @@ module MocoPo
       @prompt_manager = PromptManager.new
       @sampling_manager = SamplingManager.new
       @root_manager = RootManager.new
+      @cancellation_manager = CancellationManager.new
       @handler_manager = HandlerManager.new(self)
       setup_routes if setup_routes
     end
