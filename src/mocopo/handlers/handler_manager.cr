@@ -27,6 +27,7 @@ module MocoPo
       sampling_handler = SamplingHandler.new(@server)
       roots_handler = RootsHandler.new(@server)
       cancellation_handler = CancellationHandler.new(@server)
+      completion_handler = CompletionHandler.new(@server)
 
       # Register handlers
       register_handler("initialize", initialize_handler)
@@ -36,6 +37,7 @@ module MocoPo
       register_handler("sampling", sampling_handler)
       register_handler("roots", roots_handler)
       register_handler("cancellation", cancellation_handler)
+      register_handler("completion", completion_handler)
 
       # Register method mappings
       register_method("initialize", initialize_handler, :handle)
@@ -60,6 +62,7 @@ module MocoPo
       register_method("cancellation/cancel", cancellation_handler, :handle_cancel)
       register_method("cancellation/status", cancellation_handler, :handle_status)
       register_method("cancellation/list", cancellation_handler, :handle_list)
+      register_method("completion/complete", completion_handler, :handle_complete)
     end
 
     # Register a handler
@@ -115,6 +118,8 @@ module MocoPo
           handler.handle_cancel(id, params)
         when :handle_status
           handler.handle_status(id, params)
+        when :handle_complete
+          handler.handle_complete(id, params)
         else
           handler.handle(id, params)
         end

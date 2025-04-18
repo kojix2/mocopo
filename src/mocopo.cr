@@ -13,6 +13,7 @@ require "./mocopo/handlers"
 require "./mocopo/json_rpc"
 require "./mocopo/notifications"
 require "./mocopo/pagination"
+require "./mocopo/completion"
 
 # MocoPo - A Crystal library for building MCP (Model Context Protocol) servers
 module MocoPo
