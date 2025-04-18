@@ -25,6 +25,7 @@ module MocoPo
       resources_handler = ResourcesHandler.new(@server)
       prompts_handler = PromptsHandler.new(@server)
       sampling_handler = SamplingHandler.new(@server)
+      roots_handler = RootsHandler.new(@server)
 
       # Register handlers
       register_handler("initialize", initialize_handler)
@@ -32,6 +33,7 @@ module MocoPo
       register_handler("resources", resources_handler)
       register_handler("prompts", prompts_handler)
       register_handler("sampling", sampling_handler)
+      register_handler("roots", roots_handler)
 
       # Register method mappings
       register_method("initialize", initialize_handler, :handle)
@@ -45,6 +47,13 @@ module MocoPo
       register_method("sampling/list", sampling_handler, :handle_list)
       register_method("sampling/sample", sampling_handler, :handle_sample)
       register_method("sampling/createMessage", sampling_handler, :handle_create_message)
+      register_method("roots/list", roots_handler, :handle_list)
+      register_method("roots/listDirectory", roots_handler, :handle_list_directory)
+      register_method("roots/readFile", roots_handler, :handle_read_file)
+      register_method("roots/writeFile", roots_handler, :handle_write_file)
+      register_method("roots/deleteFile", roots_handler, :handle_delete_file)
+      register_method("roots/createDirectory", roots_handler, :handle_create_directory)
+      register_method("roots/deleteDirectory", roots_handler, :handle_delete_directory)
     end
 
     # Register a handler
@@ -82,6 +91,18 @@ module MocoPo
           handler.handle_sample(id, params)
         when :handle_create_message
           handler.handle_create_message(id, params)
+        when :handle_list_directory
+          handler.handle_list_directory(id, params)
+        when :handle_read_file
+          handler.handle_read_file(id, params)
+        when :handle_write_file
+          handler.handle_write_file(id, params)
+        when :handle_delete_file
+          handler.handle_delete_file(id, params)
+        when :handle_create_directory
+          handler.handle_create_directory(id, params)
+        when :handle_delete_directory
+          handler.handle_delete_directory(id, params)
         else
           handler.handle(id, params)
         end

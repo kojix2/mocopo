@@ -7,6 +7,7 @@ require "./mocopo/arguments"
 require "./mocopo/prompts"
 require "./mocopo/context"
 require "./mocopo/sampling"
+require "./mocopo/roots"
 require "./mocopo/handlers"
 require "./mocopo/json_rpc"
 
@@ -46,6 +47,7 @@ module MocoPo
       @resource_manager = ResourceManager.new
       @prompt_manager = PromptManager.new
       @sampling_manager = SamplingManager.new
+      @root_manager = RootManager.new
       @handler_manager = HandlerManager.new(self)
       setup_routes if setup_routes
     end
