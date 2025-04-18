@@ -5,6 +5,7 @@ require "./mocopo/resources"
 require "./mocopo/arguments"
 require "./mocopo/prompts"
 require "./mocopo/context"
+require "./mocopo/handlers"
 
 # MocoPo - A Crystal library for building MCP (Model Context Protocol) servers
 module MocoPo
@@ -24,12 +25,22 @@ module MocoPo
     # Prompt manager
     getter prompt_manager : PromptManager
 
+    # Handler manager
+    getter handler_manager : HandlerManager?
+
+    # Server name
+    getter name : String
+
+    # Server version
+    getter version : String
+
     # Initialize a new MCP server
-    def initialize(@name : String, @version : String)
+    def initialize(@name : String, @version : String, setup_routes : Bool = true)
       @tool_manager = ToolManager.new
       @resource_manager = ResourceManager.new
       @prompt_manager = PromptManager.new
-      setup_routes
+      @handler_manager = HandlerManager.new(self)
+      setup_routes if setup_routes
     end
 
     # Start the server on the specified port
@@ -152,266 +163,12 @@ module MocoPo
       # Handle method not found
       return error_response(-32601, "Method not found", id) unless method
 
-      # Process based on method
-      case method
-      when "initialize"
-        handle_initialize(id, params)
-      when "tools/list"
-        handle_tools_list(id, params)
-      when "tools/call"
-        handle_tools_call(id, params)
-      when "resources/list"
-        handle_resources_list(id, params)
-      when "resources/read"
-        handle_resources_read(id, params)
-      when "resources/subscribe"
-        handle_resources_subscribe(id, params)
-      when "prompts/list"
-        handle_prompts_list(id, params)
-      when "prompts/get"
-        handle_prompts_get(id, params)
+      # Process using handler manager if available
+      if handler_manager = @handler_manager
+        handler_manager.handle_request(method, id, params)
       else
-        error_response(-32601, "Method not found: #{method}", id)
-      end
-    end
-
-    # Handle initialize request
-    private def handle_initialize(id, params)
-      # Extract client protocol version
-      client_protocol_version = params.try &.["protocolVersion"]?.try &.as_s || "unknown"
-
-      # Check if we support the requested protocol version
-      if client_protocol_version != PROTOCOL_VERSION
-        # We could negotiate a different version here if needed
-        # For now, we just return our supported version
-      end
-
-      # Return server capabilities and information
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "result"  => {
-          "protocolVersion" => PROTOCOL_VERSION,
-          "capabilities"    => {
-            "resources" => {
-              "listChanged" => true,
-            },
-            "tools" => {
-              "listChanged" => true,
-            },
-            "prompts" => {
-              "listChanged" => true,
-            },
-            "logging" => {} of String => Bool,
-          },
-          "serverInfo" => {
-            "name"    => @name,
-            "version" => @version,
-          },
-        },
-      }
-    end
-
-    # Handle tools/list request
-    private def handle_tools_list(id, params)
-      # Get all tools
-      tools = @tool_manager.list
-
-      # Convert to JSON-compatible format
-      tools_json = tools.map(&.to_json_object)
-
-      # Return the list of tools
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "result"  => {
-          "tools" => tools_json,
-        },
-      }
-    end
-
-    # Handle tools/call request
-    private def handle_tools_call(id, params)
-      # Extract tool name and arguments
-      name = params.try &.["name"]?.try &.as_s
-      arguments = params.try &.["arguments"]?
-
-      # Check if tool exists
-      unless name && @tool_manager.exists?(name)
-        return error_response(-32602, "Unknown tool: #{name || "missing name"}", id)
-      end
-
-      # Get the tool
-      tool = @tool_manager.get(name).not_nil!
-
-      begin
-        # Convert arguments to Hash(String, JSON::Any)? if present
-        args = arguments.try &.as_h?
-
-        # Create a context for the tool execution
-        request_id = id.to_s
-        client_id = "client-#{Random.new.hex(4)}" # In a real implementation, this would be tied to the client
-        context = Context.new(request_id, client_id, self)
-
-        # Execute the tool with context
-        result = tool.execute(args, context)
-
-        # Return the result
-        {
-          "jsonrpc" => "2.0",
-          "id"      => id,
-          "result"  => result,
-        }
-      rescue ex
-        # Handle execution errors
-        {
-          "jsonrpc" => "2.0",
-          "id"      => id,
-          "result"  => {
-            "content" => [
-              {
-                "type" => "text",
-                "text" => "Error executing tool: #{ex.message}",
-              },
-            ],
-            "isError" => true,
-          },
-        }
-      end
-    end
-
-    # Handle resources/list request
-    private def handle_resources_list(id, params)
-      # Get all resources
-      resources = @resource_manager.list
-
-      # Convert to JSON-compatible format
-      resources_json = resources.map(&.to_json_object)
-
-      # Return the list of resources
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "result"  => {
-          "resources" => resources_json,
-        },
-      }
-    end
-
-    # Handle resources/read request
-    private def handle_resources_read(id, params)
-      # Extract resource URI
-      uri = params.try &.["uri"]?.try &.as_s
-
-      # Check if resource exists
-      unless uri && @resource_manager.exists?(uri)
-        return error_response(-32002, "Resource not found: #{uri || "missing uri"}", id)
-      end
-
-      begin
-        # Get the resource
-        resource = @resource_manager.get(uri).not_nil!
-
-        # Create a context for the resource access
-        request_id = id.to_s
-        client_id = "client-#{Random.new.hex(4)}" # In a real implementation, this would be tied to the client
-        context = Context.new(request_id, client_id, self)
-
-        # Get the resource content with context
-        content = resource.get_content(context)
-
-        # Return the content
-        {
-          "jsonrpc" => "2.0",
-          "id"      => id,
-          "result"  => {
-            "contents" => [content.to_json_object],
-          },
-        }
-      rescue ex
-        # Handle content retrieval errors
-        error_response(-32603, "Error retrieving resource content: #{ex.message}", id)
-      end
-    end
-
-    # Handle resources/subscribe request
-    private def handle_resources_subscribe(id, params)
-      # Extract resource URI
-      uri = params.try &.["uri"]?.try &.as_s
-
-      # Check if resource exists
-      unless uri && @resource_manager.exists?(uri)
-        return error_response(-32002, "Resource not found: #{uri || "missing uri"}", id)
-      end
-
-      # Generate a subscriber ID (in a real implementation, this would be tied to the client)
-      subscriber_id = Random.new.hex(8)
-
-      # Subscribe to the resource
-      @resource_manager.subscribe(uri, subscriber_id)
-
-      # Return success
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "result"  => {
-          "subscribed" => true,
-        },
-      }
-    end
-
-    # Handle prompts/list request
-    private def handle_prompts_list(id, params)
-      # Get all prompts
-      prompts = @prompt_manager.list
-
-      # Convert to JSON-compatible format
-      prompts_json = prompts.map(&.to_json_object)
-
-      # Return the list of prompts
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "result"  => {
-          "prompts" => prompts_json,
-        },
-      }
-    end
-
-    # Handle prompts/get request
-    private def handle_prompts_get(id, params)
-      # Extract prompt name and arguments
-      name = params.try &.["name"]?.try &.as_s
-      arguments = params.try &.["arguments"]?
-
-      # Check if prompt exists
-      unless name && @prompt_manager.exists?(name)
-        return error_response(-32602, "Unknown prompt: #{name || "missing name"}", id)
-      end
-
-      # Get the prompt
-      prompt = @prompt_manager.get(name).not_nil!
-
-      begin
-        # Convert arguments to Hash(String, JSON::Any)? if present
-        args = arguments.try &.as_h?
-
-        # Execute the prompt
-        messages = prompt.execute(args)
-        messages_json = messages.map(&.to_json_object)
-
-        # Return the result
-        {
-          "jsonrpc" => "2.0",
-          "id"      => id,
-          "result"  => {
-            "description" => prompt.description,
-            "messages"    => messages_json,
-          },
-        }
-      rescue ex
-        # Handle execution errors
-        error_response(-32603, "Error executing prompt: #{ex.message}", id)
+        # Fallback to error response if handler manager is not available
+        error_response(-32603, "Handler manager not initialized", id)
       end
     end
 
