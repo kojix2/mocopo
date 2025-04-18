@@ -53,7 +53,7 @@ module MocoPo
     end
 
     # Handle a JSON-RPC request
-    def handle_request(method : String, id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle_request(method : String, id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Check if method exists
       if @method_mappings.has_key?(method)
         # Get handler and method
@@ -78,14 +78,10 @@ module MocoPo
         end
       else
         # Method not found
-        {
-          "jsonrpc" => "2.0",
-          "id"      => id,
-          "error"   => {
-            "code"    => -32601,
-            "message" => "Method not found: #{method}",
-          },
-        }
+        JsonRpcErrorResponse.new(
+          JsonRpcError.new(-32601, "Method not found: #{method}"),
+          id
+        ).to_json_object
       end
     end
   end

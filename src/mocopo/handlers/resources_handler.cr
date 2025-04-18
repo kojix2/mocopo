@@ -2,7 +2,7 @@ module MocoPo
   # Handler for resources methods
   class ResourcesHandler < BaseHandler
     # Handle resources/list request
-    def handle_list(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle_list(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Get all resources
       resources = @server.resource_manager.list
 
@@ -16,7 +16,7 @@ module MocoPo
     end
 
     # Handle resources/read request
-    def handle_read(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle_read(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract resource URI
       uri = params.try &.["uri"]?.try &.as_s
 
@@ -48,7 +48,7 @@ module MocoPo
     end
 
     # Handle resources/subscribe request
-    def handle_subscribe(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle_subscribe(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract resource URI
       uri = params.try &.["uri"]?.try &.as_s
 
@@ -70,7 +70,7 @@ module MocoPo
     end
 
     # Handle a JSON-RPC request
-    def handle(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # This method should not be called directly
       error_response(-32603, "ResourcesHandler.handle called directly", id)
     end

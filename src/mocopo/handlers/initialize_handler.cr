@@ -2,7 +2,7 @@ module MocoPo
   # Handler for initialize method
   class InitializeHandler < BaseHandler
     # Handle initialize request
-    def handle(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract client protocol version
       client_protocol_version = params.try &.["protocolVersion"]?.try &.as_s || "unknown"
 

@@ -9,27 +9,16 @@ module MocoPo
     end
 
     # Handle a JSON-RPC request
-    abstract def handle(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    abstract def handle(id : JsonRpcId, params : JsonRpcParams) : JsonObject
 
     # Create a JSON-RPC success response
-    protected def success_response(id, result)
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "result"  => result,
-      }
+    protected def success_response(id : JsonRpcId, result : JsonRpcResult)
+      JsonRpcSuccessResponse.new(result, id).to_json_object
     end
 
     # Create a JSON-RPC error response
-    protected def error_response(code : Int32, message : String, id = nil)
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "error"   => {
-          "code"    => code,
-          "message" => message,
-        },
-      }
+    protected def error_response(code : Int32, message : String, id : JsonRpcId = nil)
+      JsonRpcErrorResponse.new(JsonRpcError.new(code, message), id).to_json_object
     end
   end
 end

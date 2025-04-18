@@ -1,11 +1,13 @@
 require "kemal"
 require "json"
+require "./mocopo/types"
 require "./mocopo/tools"
 require "./mocopo/resources"
 require "./mocopo/arguments"
 require "./mocopo/prompts"
 require "./mocopo/context"
 require "./mocopo/handlers"
+require "./mocopo/json_rpc"
 
 # MocoPo - A Crystal library for building MCP (Model Context Protocol) servers
 module MocoPo
@@ -173,15 +175,8 @@ module MocoPo
     end
 
     # Create a JSON-RPC error response
-    private def error_response(code, message, id = nil)
-      {
-        "jsonrpc" => "2.0",
-        "id"      => id,
-        "error"   => {
-          "code"    => code,
-          "message" => message,
-        },
-      }
+    private def error_response(code : Int32, message : String, id : JsonRpcId = nil)
+      JsonRpcErrorResponse.new(JsonRpcError.new(code, message), id).to_json_object
     end
   end
 end

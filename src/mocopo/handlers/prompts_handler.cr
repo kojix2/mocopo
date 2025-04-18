@@ -2,7 +2,7 @@ module MocoPo
   # Handler for prompts methods
   class PromptsHandler < BaseHandler
     # Handle prompts/list request
-    def handle_list(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle_list(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Get all prompts
       prompts = @server.prompt_manager.list
 
@@ -16,7 +16,7 @@ module MocoPo
     end
 
     # Handle prompts/get request
-    def handle_get(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle_get(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract prompt name and arguments
       name = params.try &.["name"]?.try &.as_s
       arguments = params.try &.["arguments"]?
@@ -49,7 +49,7 @@ module MocoPo
     end
 
     # Handle a JSON-RPC request
-    def handle(id, params) : Hash(String, JSON::Any | Array(JSON::Any) | Hash(String, JSON::Any) | String | Int32 | Bool | Nil)
+    def handle(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # This method should not be called directly
       error_response(-32603, "PromptsHandler.handle called directly", id)
     end

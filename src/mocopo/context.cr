@@ -36,20 +36,20 @@ module MocoPo
 
     # Report progress
     def report_progress(current : Int32 | Float64, total : Int32 | Float64, message : String? = nil)
-      # Create notification without explicit type
-      jsonrpc = "2.0"
-      method = "notifications/progress"
-      params = {} of String => String | Int32 | Float64 | Nil
+      # Create params
+      params = {} of String => JsonValue
       params["progressToken"] = @request_id
       params["progress"] = current
       params["total"] = total
       params["message"] = message if message
 
-      notification = {} of String => String | Hash(String, String | Int32 | Float64 | Nil)
-      notification["jsonrpc"] = jsonrpc
-      notification["method"] = method
+      # Create notification
+      notification = {} of String => JsonValue
+      notification["jsonrpc"] = "2.0"
+      notification["method"] = "notifications/progress"
       notification["params"] = params
 
+      # Send notification
       send_notification(notification)
     end
 
@@ -65,20 +65,22 @@ module MocoPo
 
     # Send a log notification
     private def send_log_notification(level : String, message : String)
-      # Create notification without explicit type
-      jsonrpc = "2.0"
-      method = "notifications/message"
-      params = {} of String => String | Hash(String, String)
-      params["level"] = level
-      data = {} of String => String
+      # Create data
+      data = {} of String => JsonValue
       data["message"] = message
+
+      # Create params
+      params = {} of String => JsonValue
+      params["level"] = level
       params["data"] = data
 
-      notification = {} of String => String | Hash(String, String | Hash(String, String))
-      notification["jsonrpc"] = jsonrpc
-      notification["method"] = method
+      # Create notification
+      notification = {} of String => JsonValue
+      notification["jsonrpc"] = "2.0"
+      notification["method"] = "notifications/message"
       notification["params"] = params
 
+      # Send notification
       send_notification(notification)
     end
 
