@@ -108,14 +108,29 @@ module MocoPo
 
   # Manages tools for an MCP server
   class ToolManager
+    # Server instance
+    @server : Server?
+
     # Initialize a new tool manager
     def initialize
       @tools = {} of String => Tool
+      @server = nil
+    end
+
+    # Set the server instance
+    def server=(server : Server)
+      @server = server
     end
 
     # Register a new tool
     def register(tool : Tool)
+      was_new = !@tools.has_key?(tool.name)
       @tools[tool.name] = tool
+
+      # Notify clients if this is a new tool
+      if was_new && (server = @server) && (notification_manager = server.notification_manager)
+        notification_manager.tools_list_changed
+      end
     end
 
     # Get a tool by name
@@ -135,7 +150,14 @@ module MocoPo
 
     # Remove a tool
     def remove(name : String)
-      @tools.delete(name)
+      if @tools.has_key?(name)
+        @tools.delete(name)
+
+        # Notify clients that a tool was removed
+        if (server = @server) && (notification_manager = server.notification_manager)
+          notification_manager.tools_list_changed
+        end
+      end
     end
   end
 end

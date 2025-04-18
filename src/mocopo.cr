@@ -11,6 +11,7 @@ require "./mocopo/roots"
 require "./mocopo/cancellation"
 require "./mocopo/handlers"
 require "./mocopo/json_rpc"
+require "./mocopo/notifications"
 
 # MocoPo - A Crystal library for building MCP (Model Context Protocol) servers
 module MocoPo
@@ -36,6 +37,9 @@ module MocoPo
     # Handler manager
     getter handler_manager : HandlerManager?
 
+    # Notification manager
+    getter notification_manager : NotificationManager?
+
     # Server name
     getter name : String
 
@@ -44,13 +48,27 @@ module MocoPo
 
     # Initialize a new MCP server
     def initialize(@name : String, @version : String, setup_routes : Bool = true)
+      # Create managers
       @tool_manager = ToolManager.new
       @resource_manager = ResourceManager.new
       @prompt_manager = PromptManager.new
       @sampling_manager = SamplingManager.new
       @root_manager = RootManager.new
       @cancellation_manager = CancellationManager.new
+
+      # Create notification manager
+      notification_mgr = NotificationManager.new(self)
+      @notification_manager = notification_mgr
+
+      # Set server reference in managers
+      @tool_manager.server = self
+      @resource_manager.server = self
+      @prompt_manager.server = self
+
+      # Create handler manager
       @handler_manager = HandlerManager.new(self)
+
+      # Setup routes
       setup_routes if setup_routes
     end
 

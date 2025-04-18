@@ -112,15 +112,30 @@ module MocoPo
 
   # Manages resources for an MCP server
   class ResourceManager
+    # Server instance
+    @server : Server?
+
     # Initialize a new resource manager
     def initialize
       @resources = {} of String => Resource
       @subscribers = {} of String => Set(String)
+      @server = nil
+    end
+
+    # Set the server instance
+    def server=(server : Server)
+      @server = server
     end
 
     # Register a new resource
     def register(resource : Resource)
+      was_new = !@resources.has_key?(resource.uri)
       @resources[resource.uri] = resource
+
+      # Notify clients if this is a new resource
+      if was_new && (server = @server) && (notification_manager = server.notification_manager)
+        notification_manager.resources_list_changed
+      end
     end
 
     # Get a resource by URI
@@ -140,7 +155,14 @@ module MocoPo
 
     # Remove a resource
     def remove(uri : String)
-      @resources.delete(uri)
+      if @resources.has_key?(uri)
+        @resources.delete(uri)
+
+        # Notify clients that a resource was removed
+        if (server = @server) && (notification_manager = server.notification_manager)
+          notification_manager.resources_list_changed
+        end
+      end
     end
 
     # Subscribe to a resource
@@ -158,6 +180,13 @@ module MocoPo
     # Get subscribers for a resource
     def subscribers(uri : String) : Set(String)
       @subscribers[uri]? || Set(String).new
+    end
+
+    # Notify subscribers that a resource has been updated
+    def notify_resource_updated(uri : String)
+      if exists?(uri) && (server = @server) && (notification_manager = server.notification_manager)
+        notification_manager.resource_updated(uri)
+      end
     end
   end
 end

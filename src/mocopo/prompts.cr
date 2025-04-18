@@ -187,14 +187,29 @@ module MocoPo
 
   # Manages prompts for an MCP server
   class PromptManager
+    # Server instance
+    @server : Server?
+
     # Initialize a new prompt manager
     def initialize
       @prompts = {} of String => Prompt
+      @server = nil
+    end
+
+    # Set the server instance
+    def server=(server : Server)
+      @server = server
     end
 
     # Register a new prompt
     def register(prompt : Prompt)
+      was_new = !@prompts.has_key?(prompt.name)
       @prompts[prompt.name] = prompt
+
+      # Notify clients if this is a new prompt
+      if was_new && (server = @server) && (notification_manager = server.notification_manager)
+        notification_manager.prompts_list_changed
+      end
     end
 
     # Get a prompt by name
@@ -214,7 +229,14 @@ module MocoPo
 
     # Remove a prompt
     def remove(name : String)
-      @prompts.delete(name)
+      if @prompts.has_key?(name)
+        @prompts.delete(name)
+
+        # Notify clients that a prompt was removed
+        if (server = @server) && (notification_manager = server.notification_manager)
+          notification_manager.prompts_list_changed
+        end
+      end
     end
   end
 end
