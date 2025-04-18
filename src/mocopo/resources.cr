@@ -17,10 +17,10 @@ module MocoPo
     getter size : Int64?
 
     # Content callback
-    @content_callback : Proc(ResourceContent)?
+    @content_callback : Proc(Context?, ResourceContent)?
 
     # Initialize a new resource
-    def initialize(@uri : String, @name : String, @description : String? = nil, @mime_type : String? = nil, @size : Int64? = nil, &content_callback : -> ResourceContent)
+    def initialize(@uri : String, @name : String, @description : String? = nil, @mime_type : String? = nil, @size : Int64? = nil, &content_callback : Context? -> ResourceContent)
       @content_callback = content_callback
     end
 
@@ -30,15 +30,15 @@ module MocoPo
     end
 
     # Set the content callback
-    def on_read(&content_callback : -> ResourceContent)
+    def on_read(&content_callback : Context? -> ResourceContent)
       @content_callback = content_callback
       self
     end
 
     # Get the resource content
-    def get_content : ResourceContent
+    def get_content(context : Context? = nil) : ResourceContent
       if @content_callback
-        @content_callback.not_nil!.call
+        @content_callback.not_nil!.call(context)
       else
         # Default content if no callback is set
         ResourceContent.text(

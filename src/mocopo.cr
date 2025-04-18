@@ -4,6 +4,7 @@ require "./mocopo/tools"
 require "./mocopo/resources"
 require "./mocopo/arguments"
 require "./mocopo/prompts"
+require "./mocopo/context"
 
 # MocoPo - A Crystal library for building MCP (Model Context Protocol) servers
 module MocoPo
@@ -201,6 +202,7 @@ module MocoPo
             "prompts" => {
               "listChanged" => true,
             },
+            "logging" => {} of String => Bool,
           },
           "serverInfo" => {
             "name"    => @name,
@@ -246,8 +248,13 @@ module MocoPo
         # Convert arguments to Hash(String, JSON::Any)? if present
         args = arguments.try &.as_h?
 
-        # Execute the tool
-        result = tool.execute(args)
+        # Create a context for the tool execution
+        request_id = id.to_s
+        client_id = "client-#{Random.new.hex(4)}" # In a real implementation, this would be tied to the client
+        context = Context.new(request_id, client_id, self)
+
+        # Execute the tool with context
+        result = tool.execute(args, context)
 
         # Return the result
         {
@@ -305,8 +312,13 @@ module MocoPo
         # Get the resource
         resource = @resource_manager.get(uri).not_nil!
 
-        # Get the resource content
-        content = resource.get_content
+        # Create a context for the resource access
+        request_id = id.to_s
+        client_id = "client-#{Random.new.hex(4)}" # In a real implementation, this would be tied to the client
+        context = Context.new(request_id, client_id, self)
+
+        # Get the resource content with context
+        content = resource.get_content(context)
 
         # Return the content
         {

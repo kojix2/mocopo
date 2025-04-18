@@ -16,10 +16,10 @@ module MocoPo
     getter argument_builder : ArgumentBuilder
 
     # Execution callback
-    @callback : Proc(Hash(String, JSON::Any)?, Hash(String, String | Array(Hash(String, String))))?
+    @callback : Proc(Hash(String, JSON::Any)?, Context?, Hash(String, String | Array(Hash(String, String))))?
 
     # Initialize a new tool
-    def initialize(@name : String, @description : String, @input_schema : Hash(String, JSON::Any), &callback : Hash(String, JSON::Any)? -> Hash(String, String | Array(Hash(String, String))))
+    def initialize(@name : String, @description : String, @input_schema : Hash(String, JSON::Any), &callback : (Hash(String, JSON::Any)?, Context?) -> Hash(String, String | Array(Hash(String, String))))
       @callback = callback
       @argument_builder = ArgumentBuilder.new
     end
@@ -31,7 +31,7 @@ module MocoPo
     end
 
     # Set the execution callback
-    def on_execute(&callback : Hash(String, JSON::Any)? -> Hash(String, String | Array(Hash(String, String))))
+    def on_execute(&callback : (Hash(String, JSON::Any)?, Context?) -> Hash(String, String | Array(Hash(String, String))))
       @callback = callback
       self
     end
@@ -79,9 +79,9 @@ module MocoPo
     end
 
     # Execute the tool with the given arguments
-    def execute(arguments : Hash(String, JSON::Any)?) : Hash(String, String | Array(Hash(String, String)))
+    def execute(arguments : Hash(String, JSON::Any)?, context : Context? = nil) : Hash(String, String | Array(Hash(String, String)))
       if @callback
-        @callback.not_nil!.call(arguments)
+        @callback.not_nil!.call(arguments, context)
       else
         # Default response if no callback is set
         {
