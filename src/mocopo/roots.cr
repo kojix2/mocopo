@@ -21,13 +21,15 @@ module MocoPo
 
     # Initialize a new root
     def initialize(@id : String, @name : String, @description : String, @path : String, @read_only : Bool = true)
+      path_obj = Path.new(@path)
+
       # Ensure path exists
-      unless Dir.exists?(@path)
+      unless Dir.exists?(path_obj.to_s)
         raise ArgumentError.new("Root path does not exist: #{@path}")
       end
 
       # Ensure path is absolute
-      unless File.expand_path(@path) == @path
+      unless path_obj.absolute?
         raise ArgumentError.new("Root path must be absolute: #{@path}")
       end
     end
@@ -44,77 +46,87 @@ module MocoPo
 
     # Check if a path is within this root
     def contains?(path : String) : Bool
-      # Normalize paths
-      normalized_path = File.expand_path(path)
-      normalized_root = File.expand_path(@path)
+      # Normalize paths using Path struct
+      normalized_path = Path.new(path).expand
+      normalized_root = Path.new(@path).expand
 
       # Check if path starts with root
-      normalized_path.starts_with?(normalized_root)
+      normalized_path.to_s.starts_with?(normalized_root.to_s)
     end
 
     # Get the relative path from this root
     def relative_path(path : String) : String
-      normalized_path = File.expand_path(path)
-      normalized_root = File.expand_path(@path)
-      unless normalized_path.starts_with?(normalized_root)
+      # Normalize paths using Path struct
+      normalized_path = Path.new(path).expand
+      normalized_root = Path.new(@path).expand
+
+      unless normalized_path.to_s.starts_with?(normalized_root.to_s)
         raise ArgumentError.new("Path is not within root: #{path}")
       end
-      rel_path = normalized_path[normalized_root.size..-1]
-      rel_path = rel_path.gsub("\\", "/")
-      rel_path = "/" + rel_path.lstrip('/')
-      rel_path
+
+      # Extract relative path and convert to POSIX format
+      rel_path = normalized_path.to_s[normalized_root.to_s.size..-1]
+
+      # Convert to POSIX path and ensure it starts with a slash
+      posix_path = Path.posix(rel_path).to_s
+      posix_path = "/" + posix_path.lstrip('/')
+      posix_path
     end
 
     # Get the absolute path from a relative path
     def absolute_path(relative_path : String) : String
+      # Remove leading slash if present
       relative_path = relative_path[1..-1] if relative_path.starts_with?("/")
-      File.join(@path, relative_path)
+
+      # Use Path.posix to ensure consistent forward slashes
+      path = Path.new(@path).join(relative_path)
+      Path.posix(path).to_s
     end
 
     # Check if a file exists
     def file_exists?(relative_path : String) : Bool
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
-      # Check if file exists
-      File.exists?(path) && !Dir.exists?(path)
+      # Check if file exists (exists but not a directory)
+      File.exists?(path.to_s) && !Dir.exists?(path.to_s)
     end
 
     # Check if a directory exists
     def directory_exists?(relative_path : String) : Bool
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
       # Check if directory exists
-      Dir.exists?(path)
+      Dir.exists?(path.to_s)
     end
 
     # List files in a directory
     def list_directory(relative_path : String) : Array(String)
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
       # Check if directory exists
-      unless Dir.exists?(path)
+      unless Dir.exists?(path.to_s)
         raise ArgumentError.new("Directory does not exist: #{relative_path}")
       end
 
       # List files
-      Dir.entries(path).reject { |entry| entry == "." || entry == ".." }
+      Dir.entries(path.to_s).reject { |entry| entry == "." || entry == ".." }
     end
 
     # Read a file
     def read_file(relative_path : String) : String
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
       # Check if file exists
-      unless File.exists?(path) && !Dir.exists?(path)
+      unless File.exists?(path.to_s) && !Dir.exists?(path.to_s)
         raise ArgumentError.new("File does not exist: #{relative_path}")
       end
 
       # Read file
-      File.read(path)
+      File.read(path.to_s)
     end
 
     # Write a file
@@ -124,14 +136,15 @@ module MocoPo
         raise ArgumentError.new("Root is read-only: #{@id}")
       end
 
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
       # Create parent directories
-      FileUtils.mkdir_p(File.dirname(path))
+      parent_dir = path.parent
+      FileUtils.mkdir_p(parent_dir.to_s)
 
       # Write file
-      File.write(path, content)
+      File.write(path.to_s, content)
     end
 
     # Delete a file
@@ -141,16 +154,16 @@ module MocoPo
         raise ArgumentError.new("Root is read-only: #{@id}")
       end
 
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
       # Check if file exists
-      unless File.exists?(path) && !Dir.exists?(path)
+      unless File.exists?(path.to_s) && !Dir.exists?(path.to_s)
         raise ArgumentError.new("File does not exist: #{relative_path}")
       end
 
       # Delete file
-      File.delete(path)
+      File.delete(path.to_s)
     end
 
     # Create a directory
@@ -160,11 +173,11 @@ module MocoPo
         raise ArgumentError.new("Root is read-only: #{@id}")
       end
 
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
       # Create directory
-      FileUtils.mkdir_p(path)
+      FileUtils.mkdir_p(path.to_s)
     end
 
     # Delete a directory
@@ -174,16 +187,16 @@ module MocoPo
         raise ArgumentError.new("Root is read-only: #{@id}")
       end
 
-      # Get absolute path
-      path = absolute_path(relative_path)
+      # Get absolute path as Path object
+      path = Path.new(absolute_path(relative_path))
 
       # Check if directory exists
-      unless Dir.exists?(path)
+      unless Dir.exists?(path.to_s)
         raise ArgumentError.new("Directory does not exist: #{relative_path}")
       end
 
       # Delete directory
-      FileUtils.rm_rf(path)
+      FileUtils.rm_rf(path.to_s)
     end
   end
 
@@ -248,11 +261,11 @@ module MocoPo
 
     # Find a root that contains a path
     def find_root_for_path(path : String) : Root?
-      # Normalize path
-      normalized_path = File.expand_path(path)
+      # Normalize path using Path struct
+      normalized_path = Path.new(path).expand
 
       # Find root
-      @roots.values.find { |root| root.contains?(normalized_path) }
+      @roots.values.find { |root| root.contains?(normalized_path.to_s) }
     end
 
     # Get the root and relative path for a path
