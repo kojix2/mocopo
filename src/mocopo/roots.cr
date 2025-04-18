@@ -54,25 +54,20 @@ module MocoPo
 
     # Get the relative path from this root
     def relative_path(path : String) : String
-      # Normalize paths
       normalized_path = File.expand_path(path)
       normalized_root = File.expand_path(@path)
-
-      # Check if path is within root
       unless normalized_path.starts_with?(normalized_root)
         raise ArgumentError.new("Path is not within root: #{path}")
       end
-
-      # Get relative path
-      normalized_path[normalized_root.size..-1]
+      rel_path = normalized_path[normalized_root.size..-1]
+      rel_path = rel_path.gsub("\\", "/")
+      rel_path = "/" + rel_path.lstrip('/')
+      rel_path
     end
 
     # Get the absolute path from a relative path
     def absolute_path(relative_path : String) : String
-      # Remove leading slash
       relative_path = relative_path[1..-1] if relative_path.starts_with?("/")
-
-      # Join paths
       File.join(@path, relative_path)
     end
 
