@@ -3,6 +3,7 @@ require "./handlers/initialize_handler"
 require "./handlers/tools_handler"
 require "./handlers/resources_handler"
 require "./handlers/prompts_handler"
+require "./handlers/sampling_handler"
 require "./handlers/handler_manager"
 
 module MocoPo

@@ -25,7 +25,8 @@ module MocoPo
           "prompts" => {
             "listChanged" => true,
           },
-          "logging" => {} of String => Bool,
+          "sampling" => {} of String => Bool,
+          "logging"  => {} of String => Bool,
         },
         "serverInfo" => {
           "name"    => @server.name,

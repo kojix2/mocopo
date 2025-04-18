@@ -24,12 +24,14 @@ module MocoPo
       tools_handler = ToolsHandler.new(@server)
       resources_handler = ResourcesHandler.new(@server)
       prompts_handler = PromptsHandler.new(@server)
+      sampling_handler = SamplingHandler.new(@server)
 
       # Register handlers
       register_handler("initialize", initialize_handler)
       register_handler("tools", tools_handler)
       register_handler("resources", resources_handler)
       register_handler("prompts", prompts_handler)
+      register_handler("sampling", sampling_handler)
 
       # Register method mappings
       register_method("initialize", initialize_handler, :handle)
@@ -40,6 +42,9 @@ module MocoPo
       register_method("resources/subscribe", resources_handler, :handle_subscribe)
       register_method("prompts/list", prompts_handler, :handle_list)
       register_method("prompts/get", prompts_handler, :handle_get)
+      register_method("sampling/list", sampling_handler, :handle_list)
+      register_method("sampling/sample", sampling_handler, :handle_sample)
+      register_method("sampling/createMessage", sampling_handler, :handle_create_message)
     end
 
     # Register a handler
@@ -73,6 +78,10 @@ module MocoPo
           handler.handle_subscribe(id, params)
         when :handle_get
           handler.handle_get(id, params)
+        when :handle_sample
+          handler.handle_sample(id, params)
+        when :handle_create_message
+          handler.handle_create_message(id, params)
         else
           handler.handle(id, params)
         end
