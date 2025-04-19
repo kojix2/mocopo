@@ -88,7 +88,7 @@ module MocoPo
     private def send_notification(notification)
       # In a real implementation, this would send the notification to the client
       # For now, we just log it to the console
-      puts "Notification: #{notification.to_json}"
+      STDERR.puts "Notification: #{notification.to_json}"
     end
   end
 end

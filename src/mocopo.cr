@@ -92,6 +92,22 @@ module MocoPo
         transport_manager.start_all
       end
 
+      # Log server information to STDERR to avoid interfering with stdio transport
+      STDERR.puts "Starting MCP server on http://localhost:#{port}/mcp"
+      STDERR.puts "Press Ctrl+C to stop"
+      STDERR.puts "Registered tools: #{tool_manager.list.map(&.name).join(", ")}"
+      STDERR.puts "Registered resources: #{resource_manager.list.map(&.name).join(", ")}"
+
+      active_transports = [] of String
+      active_transports << "HTTP" if @enabled_transports.includes?(:http)
+      active_transports << "SSE" if @enabled_transports.includes?(:sse)
+      active_transports << "stdio" if @enabled_transports.includes?(:stdio)
+      STDERR.puts "Active transports: #{active_transports.join(", ")}"
+      STDERR.puts "SSE endpoint: http://localhost:#{port}/sse" if @enabled_transports.includes?(:sse)
+
+      # Configure Kemal to use STDERR for logging
+      Kemal.config.logger = Kemal::LogHandler.new(STDERR)
+
       # Start Kemal (for backward compatibility)
       Kemal.run(port)
     end

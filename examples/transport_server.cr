@@ -49,11 +49,7 @@ sse_transport = server.transport_manager.try do |manager|
   manager.@transports.find { |t| t.is_a?(MocoPo::SseTransport) }
 end
 
-puts "Starting MCP server with multiple transports:"
-puts "- HTTP transport: POST to /mcp"
-puts "- SSE transport: GET /sse for server-to-client, POST to /messages for client-to-server"
-puts "- stdio transport: Reading from stdin, writing to stdout"
-puts "Press Ctrl+C to stop"
+# Note: Server will log information to STDERR automatically
 
 # Start the server
 server.start

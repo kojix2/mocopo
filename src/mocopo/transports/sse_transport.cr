@@ -25,7 +25,7 @@ module MocoPo
     def start : Nil
       return if @running
 
-      puts "Starting SSE transport..."
+      STDERR.puts "Starting SSE transport..."
       @running = true
 
       # Setup SSE endpoint for server-to-client streaming

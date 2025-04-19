@@ -20,10 +20,11 @@ sse_transport = server.transport_manager.try do |manager|
   manager.@transports.find { |t| t.is_a?(MocoPo::SseTransport) }
 end
 
-puts "Configured multiple transports:"
-puts "- HTTP: POST to /mcp"
-puts "- SSE: GET /sse for server-to-client, POST to /messages for client-to-server"
-puts "- stdio: Reading from stdin, writing to stdout"
+# Log transport information to STDERR
+STDERR.puts "Configured multiple transports:"
+STDERR.puts "- HTTP: POST to /mcp"
+STDERR.puts "- SSE: GET /sse for server-to-client, POST to /messages for client-to-server"
+STDERR.puts "- stdio: Reading from stdin, writing to stdout"
 
 # Register a tool with arguments and execution callback
 greet_tool = server.register_tool("greet", "Greet someone by name")
@@ -104,11 +105,7 @@ readme_resource.on_read do
 end
 
 # Start the server on port 3000
-puts "Starting MCP server on http://localhost:3000/mcp"
-puts "Press Ctrl+C to stop"
-puts "Registered tools: #{server.tool_manager.list.map(&.name).join(", ")}"
-puts "Registered resources: #{server.resource_manager.list.map(&.name).join(", ")}"
-puts "Active transports: HTTP, SSE, stdio"
+# Note: Server will log information to STDERR automatically
 
 # Send a notification to all connected clients when the server starts
 if notification_manager = server.notification_manager

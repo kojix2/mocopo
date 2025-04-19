@@ -43,10 +43,5 @@ readme_resource = MocoPo::Resource.new(
 server.resource_manager.register(readme_resource)
 
 # Start the server on port 3000
-puts "Starting MCP server on http://localhost:3000/mcp"
-puts "Press Ctrl+C to stop"
-puts "Registered tools: #{server.tool_manager.list.map(&.name).join(", ")}"
-puts "Registered resources: #{server.resource_manager.list.map(&.name).join(", ")}"
-puts "Active transports: HTTP (default), SSE"
-puts "SSE endpoint: http://localhost:3000/sse"
+# Note: Server will log information to STDERR automatically
 server.start

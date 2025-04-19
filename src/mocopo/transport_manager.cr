@@ -151,8 +151,8 @@ module MocoPo
 
     # Handle an error from a transport
     private def handle_error(error : Exception, transport : Transport) : Nil
-      # Log the error
-      puts "Transport error: #{error.message}"
+      # Log the error to STDERR to avoid interfering with stdio transport
+      STDERR.puts "Transport error: #{error.message}"
     end
 
     # Handle a transport close

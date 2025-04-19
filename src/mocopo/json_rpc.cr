@@ -111,6 +111,7 @@ module MocoPo
 
       result["params"] = @params if @params
 
+      # Ensure proper JSON formatting with commas
       result
     end
   end

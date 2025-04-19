@@ -22,13 +22,13 @@ module MocoPo
           begin
             transport.send(json_object)
           rescue ex : Exception
-            puts "Failed to send notification through transport: #{ex.message}"
+            STDERR.puts "Failed to send notification through transport: #{ex.message}"
           end
         end
       end
 
-      # Log the notification (for backward compatibility)
-      puts "Broadcasting notification: #{json_object.to_json}"
+      # Log the notification to STDERR to avoid interfering with stdio transport
+      STDERR.puts "Broadcasting notification: #{json_object.to_json}"
     end
 
     # Send a prompts list changed notification

@@ -74,7 +74,7 @@ module MocoPo
 
     # Send a JSON-RPC message
     def send(message : JsonObject) : Nil
-      # Write the message to stdout
+      # Write the message to stdout - only JSON, no additional text
       STDOUT.puts(message.to_json)
       STDOUT.flush
     end

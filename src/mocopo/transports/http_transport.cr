@@ -54,7 +54,7 @@ module MocoPo
       # In HTTP transport, responses are sent directly in the HTTP response
       # This method is primarily used for notifications or responses to requests
       # that were not part of the current HTTP request/response cycle
-      puts "Sending message: #{message.to_json}"
+      STDERR.puts "Sending message: #{message.to_json}"
     end
 
     # Close the transport
