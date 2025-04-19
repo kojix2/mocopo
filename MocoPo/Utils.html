@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="mocopo">
-  <title>MocoPo::TemperatureSamplingMethod - mocopo main</title>
+  <title>MocoPo::Utils - mocopo main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -432,7 +432,7 @@
       
     </li>
   
-  <li class=" current" data-id="mocopo/MocoPo/TemperatureSamplingMethod" data-name="mocopo::temperaturesamplingmethod">
+  <li class=" " data-id="mocopo/MocoPo/TemperatureSamplingMethod" data-name="mocopo::temperaturesamplingmethod">
       <a href="../MocoPo/TemperatureSamplingMethod.html">TemperatureSamplingMethod</a>
       
     </li>
@@ -477,7 +477,7 @@
       
     </li>
   
-  <li class=" " data-id="mocopo/MocoPo/Utils" data-name="mocopo::utils">
+  <li class=" current" data-id="mocopo/MocoPo/Utils" data-name="mocopo::utils">
       <a href="../MocoPo/Utils.html">Utils</a>
       
     </li>
@@ -497,13 +497,11 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> MocoPo::<wbr>TemperatureSamplingMethod
+    module
+  </span> MocoPo::<wbr>Utils
 
 </h1>
 
-
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../MocoPo/TemperatureSamplingMethod.html">MocoPo::TemperatureSamplingMethod</a></li><li class="superclass"><a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -517,7 +515,7 @@
     Overview
   </h2>
 
-  <p>Temperature sampling method</p>
+  <p>Utility functions for MocoPo</p>
 
 
 
@@ -544,8 +542,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L513" target="_blank">
-        mocopo/sampling.cr
+      <a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/utils.cr#L3" target="_blank">
+        mocopo/utils.cr
       </a>
     
     <br/>
@@ -556,18 +554,57 @@
 
 
   
+
+  
   <h2>
-    <a id="constructors" class="anchor" href="#constructors">
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-    Constructors
+    Class Method Summary
   </h2>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
+        <a href="#ensure_json_value%28obj%29%3AJsonValue-class-method" class="signature"><strong>.ensure_json_value</strong>(obj) : JsonValue</a>
+        
+          <div class="summary"><p>Ensure any object is converted to JsonValue</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get_array_param%28params%3AJsonRpcParams%7CNil%2Ckey%3AString%29%3AArray%28JsonValue%29%7CNil-class-method" class="signature"><strong>.get_array_param</strong>(params : JsonRpcParams | Nil, key : String) : Array(JsonValue) | Nil</a>
+        
+          <div class="summary"><p>Extract an array parameter from JsonRpcParams</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get_hash_param%28params%3AJsonRpcParams%7CNil%2Ckey%3AString%29%3AHash%28String%2CJsonValue%29%7CNil-class-method" class="signature"><strong>.get_hash_param</strong>(params : JsonRpcParams | Nil, key : String) : Hash(String, JsonValue) | Nil</a>
+        
+          <div class="summary"><p>Extract a hash parameter from JsonRpcParams</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get_string_param%28params%3AJsonRpcParams%7CNil%2Ckey%3AString%29%3AString%7CNil-class-method" class="signature"><strong>.get_string_param</strong>(params : JsonRpcParams | Nil, key : String) : String | Nil</a>
+        
+          <div class="summary"><p>Extract a string parameter from JsonRpcParams</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_json_any%28value%3AJsonValue%29%3AJSON%3A%3AAny-class-method" class="signature"><strong>.to_json_any</strong>(value : JsonValue) : JSON::Any</a>
+        
+          <div class="summary"><p>Convert JsonValue to JSON::Any</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_json_value%28value%3AJSON%3A%3AAny%29%3AJsonValue-class-method" class="signature"><strong>.to_json_value</strong>(value : JSON::Any) : JsonValue</a>
+        
+          <div class="summary"><p>Convert JSON::Any to JsonValue</p></div>
         
       </li>
     
@@ -577,210 +614,155 @@
   
 
   
-
-  
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#parameters_schema%3AJsonObject-instance-method" class="signature"><strong>#parameters_schema</strong> : JsonObject</a>
-        
-          <div class="summary"><p>Return the parameters schema</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#sample%28text%3AString%2Cparams%3AJsonObject%7CNil%2Ccontext%3AContext%29%3AJsonObject-instance-method" class="signature"><strong>#sample</strong>(text : String, params : JsonObject | Nil, context : Context) : JsonObject</a>
-        
-          <div class="summary"><p>Execute sampling</p></div>
-        
-      </li>
-    
-  </ul>
-
 
 
   <div class="methods-inherited">
     
-      
-
-  <h3>Instance methods inherited from class <code><a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a></code></h3>
-  
-  
-    <a href="../MocoPo/SamplingMethod.html#description%3AString-instance-method" class="tooltip">
-      <span>description : String</span>
-    description</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#name%3AString-instance-method" class="tooltip">
-      <span>name : String</span>
-    name</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#parameters_schema%3AJsonObject-instance-method" class="tooltip">
-      <span>parameters_schema : JsonObject</span>
-    parameters_schema</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#sample%28text%3AString%2Cparams%3AJsonObject%7CNil%2Ccontext%3AContext%29%3AJsonObject-instance-method" class="tooltip">
-      <span>sample(text : String, params : JsonObject | Nil, context : Context) : JsonObject</span>
-    sample</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#to_json_object%3AJsonObject-instance-method" class="tooltip">
-      <span>to_json_object : JsonObject</span>
-    to_json_object</a>
-    
-  
-
-
-      
-
-  <h3>Constructor methods inherited from class <code><a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a></code></h3>
-  
-  
-    <a href="../MocoPo/SamplingMethod.html#new%28name%3AString%2Cdescription%3AString%29-class-method" class="tooltip">
-      <span>new(name : String, description : String)</span>
-    new</a>
-    
-  
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
   </div>
 
   
+
+  
   <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-    Constructor Detail
+    Class Method Detail
   </h2>
   
-    <div class="entry-detail" id="new-class-method">
+    <div class="entry-detail" id="ensure_json_value(obj):JsonValue-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>
+        def self.<strong>ensure_json_value</strong>(obj) : <a href="../MocoPo/JsonValue.html">JsonValue</a>
 
-        <a class="method-permalink" href="#new-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L514" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
-
-  
-
-  
-
-  
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="parameters_schema:JsonObject-instance-method">
-      <div class="signature">
-        
-        def <strong>parameters_schema</strong> : <a href="../MocoPo/JsonObject.html">JsonObject</a>
-
-        <a class="method-permalink" href="#parameters_schema%3AJsonObject-instance-method">#</a>
+        <a class="method-permalink" href="#ensure_json_value%28obj%29%3AJsonValue-class-method">#</a>
       </div>
       
         <div class="doc">
           
-            <div class="doc-inherited">
-              Description copied from class <a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a>
-            </div>
-          
-          <p>Return the parameters schema</p>
+          <p>Ensure any object is converted to JsonValue</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L518" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/utils.cr#L80" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="sample(text:String,params:JsonObject|Nil,context:Context):JsonObject-instance-method">
+    <div class="entry-detail" id="get_array_param(params:JsonRpcParams|Nil,key:String):Array(JsonValue)|Nil-class-method">
       <div class="signature">
         
-        def <strong>sample</strong>(text : String, params : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil, context : <a href="../MocoPo/Context.html">Context</a>) : <a href="../MocoPo/JsonObject.html">JsonObject</a>
+        def self.<strong>get_array_param</strong>(params : <a href="../MocoPo/JsonRpcParams.html">JsonRpcParams</a> | Nil, key : String) : Array(<a href="../MocoPo/JsonValue.html">JsonValue</a>) | Nil
 
-        <a class="method-permalink" href="#sample%28text%3AString%2Cparams%3AJsonObject%7CNil%2Ccontext%3AContext%29%3AJsonObject-instance-method">#</a>
+        <a class="method-permalink" href="#get_array_param%28params%3AJsonRpcParams%7CNil%2Ckey%3AString%29%3AArray%28JsonValue%29%7CNil-class-method">#</a>
       </div>
       
         <div class="doc">
           
-            <div class="doc-inherited">
-              Description copied from class <a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a>
-            </div>
-          
-          <p>Execute sampling</p>
+          <p>Extract an array parameter from JsonRpcParams</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L534" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/utils.cr#L118" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get_hash_param(params:JsonRpcParams|Nil,key:String):Hash(String,JsonValue)|Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>get_hash_param</strong>(params : <a href="../MocoPo/JsonRpcParams.html">JsonRpcParams</a> | Nil, key : String) : Hash(String, <a href="../MocoPo/JsonValue.html">JsonValue</a>) | Nil
+
+        <a class="method-permalink" href="#get_hash_param%28params%3AJsonRpcParams%7CNil%2Ckey%3AString%29%3AHash%28String%2CJsonValue%29%7CNil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Extract a hash parameter from JsonRpcParams</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/utils.cr#L110" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get_string_param(params:JsonRpcParams|Nil,key:String):String|Nil-class-method">
+      <div class="signature">
+        
+        def self.<strong>get_string_param</strong>(params : <a href="../MocoPo/JsonRpcParams.html">JsonRpcParams</a> | Nil, key : String) : String | Nil
+
+        <a class="method-permalink" href="#get_string_param%28params%3AJsonRpcParams%7CNil%2Ckey%3AString%29%3AString%7CNil-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Extract a string parameter from JsonRpcParams</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/utils.cr#L102" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_json_any(value:JsonValue):JSON::Any-class-method">
+      <div class="signature">
+        
+        def self.<strong>to_json_any</strong>(value : <a href="../MocoPo/JsonValue.html">JsonValue</a>) : JSON::Any
+
+        <a class="method-permalink" href="#to_json_any%28value%3AJsonValue%29%3AJSON%3A%3AAny-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Convert JsonValue to JSON::Any</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/utils.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_json_value(value:JSON::Any):JsonValue-class-method">
+      <div class="signature">
+        
+        def self.<strong>to_json_value</strong>(value : JSON::Any) : <a href="../MocoPo/JsonValue.html">JsonValue</a>
+
+        <a class="method-permalink" href="#to_json_value%28value%3AJSON%3A%3AAny%29%3AJsonValue-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Convert JSON::Any to JsonValue</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/utils.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
+
+  
+
+  
 
 
 </div>

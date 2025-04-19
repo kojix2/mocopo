@@ -152,6 +152,11 @@
       
     </li>
   
+  <li class=" " data-id="mocopo/MocoPo/HttpTransport" data-name="mocopo::httptransport">
+      <a href="../MocoPo/HttpTransport.html">HttpTransport</a>
+      
+    </li>
+  
   <li class=" " data-id="mocopo/MocoPo/ImageContent" data-name="mocopo::imagecontent">
       <a href="../MocoPo/ImageContent.html">ImageContent</a>
       
@@ -417,6 +422,16 @@
       
     </li>
   
+  <li class=" " data-id="mocopo/MocoPo/SseTransport" data-name="mocopo::ssetransport">
+      <a href="../MocoPo/SseTransport.html">SseTransport</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/StdioTransport" data-name="mocopo::stdiotransport">
+      <a href="../MocoPo/StdioTransport.html">StdioTransport</a>
+      
+    </li>
+  
   <li class=" " data-id="mocopo/MocoPo/TemperatureSamplingMethod" data-name="mocopo::temperaturesamplingmethod">
       <a href="../MocoPo/TemperatureSamplingMethod.html">TemperatureSamplingMethod</a>
       
@@ -449,6 +464,21 @@
   
   <li class=" " data-id="mocopo/MocoPo/TopPSamplingMethod" data-name="mocopo::toppsamplingmethod">
       <a href="../MocoPo/TopPSamplingMethod.html">TopPSamplingMethod</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Transport" data-name="mocopo::transport">
+      <a href="../MocoPo/Transport.html">Transport</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/TransportManager" data-name="mocopo::transportmanager">
+      <a href="../MocoPo/TransportManager.html">TransportManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Utils" data-name="mocopo::utils">
+      <a href="../MocoPo/Utils.html">Utils</a>
       
     </li>
   
@@ -514,21 +544,21 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L26" target="_blank">
+      <a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L28" target="_blank">
         mocopo.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/cancellation.cr#L129" target="_blank">
+      <a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/cancellation.cr#L129" target="_blank">
         mocopo/cancellation.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/roots.cr#L405" target="_blank">
+      <a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/roots.cr#L405" target="_blank">
         mocopo/roots.cr
       </a>
     
@@ -551,7 +581,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28name%3AString%2Cversion%3AString%2Csetup_routes%3ABool%3Dtrue%29-class-method" class="signature"><strong>.new</strong>(name : String, version : String, setup_routes : Bool = <span class="n">true</span>)</a>
+        <a href="#new%28name%3AString%2Cversion%3AString%2Csetup_routes%3ABool%3Dtrue%2Csetup_transports%3ABool%3Dtrue%29-class-method" class="signature"><strong>.new</strong>(name : String, version : String, setup_routes : Bool = <span class="n">true</span>, setup_transports : Bool = <span class="n">true</span>)</a>
         
           <div class="summary"><p>Initialize a new MCP server</p></div>
         
@@ -600,6 +630,27 @@
         <a href="#create_cancellation_token%28id%3AString%7CNil%3Dnil%29%3ACancellationToken-instance-method" class="signature"><strong>#create_cancellation_token</strong>(id : String | Nil = <span class="n">nil</span>) : CancellationToken</a>
         
           <div class="summary"><p>Create a cancellation token</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#create_http_transport%3AHttpTransport-instance-method" class="signature"><strong>#create_http_transport</strong> : HttpTransport</a>
+        
+          <div class="summary"><p>Create and register an HTTP transport</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#create_sse_transport%3ASseTransport-instance-method" class="signature"><strong>#create_sse_transport</strong> : SseTransport</a>
+        
+          <div class="summary"><p>Create and register an SSE transport</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#create_stdio_transport%3AStdioTransport-instance-method" class="signature"><strong>#create_stdio_transport</strong> : StdioTransport</a>
+        
+          <div class="summary"><p>Create and register a stdio transport</p></div>
         
       </li>
     
@@ -695,6 +746,13 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#register_transport%28transport%3ATransport%29%3ATransport-instance-method" class="signature"><strong>#register_transport</strong>(transport : Transport) : Transport</a>
+        
+          <div class="summary"><p>Create and register a transport</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#resource_manager%3AResourceManager-instance-method" class="signature"><strong>#resource_manager</strong> : ResourceManager</a>
         
           <div class="summary"><p>Resource manager</p></div>
@@ -740,6 +798,13 @@
         <a href="#tool_manager%3AToolManager-instance-method" class="signature"><strong>#tool_manager</strong> : ToolManager</a>
         
           <div class="summary"><p>Tool manager</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#transport_manager%3ATransportManager%7CNil-instance-method" class="signature"><strong>#transport_manager</strong> : TransportManager | Nil</a>
+        
+          <div class="summary"><p>Transport manager</p></div>
         
       </li>
     
@@ -794,12 +859,12 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(name:String,version:String,setup_routes:Bool=true)-class-method">
+    <div class="entry-detail" id="new(name:String,version:String,setup_routes:Bool=true,setup_transports:Bool=true)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(name : String, version : String, setup_routes : Bool = <span class="n">true</span>)
+        def self.<strong>new</strong>(name : String, version : String, setup_routes : Bool = <span class="n">true</span>, setup_transports : Bool = <span class="n">true</span>)
 
-        <a class="method-permalink" href="#new%28name%3AString%2Cversion%3AString%2Csetup_routes%3ABool%3Dtrue%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28name%3AString%2Cversion%3AString%2Csetup_routes%3ABool%3Dtrue%2Csetup_transports%3ABool%3Dtrue%29-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -810,7 +875,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L52" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -847,7 +912,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/cancellation.cr#L144" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/cancellation.cr#L144" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -868,7 +933,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/cancellation.cr#L131" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/cancellation.cr#L131" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -889,7 +954,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/cancellation.cr#L131" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/cancellation.cr#L131" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -910,7 +975,70 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/cancellation.cr#L139" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/cancellation.cr#L139" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="create_http_transport:HttpTransport-instance-method">
+      <div class="signature">
+        
+        def <strong>create_http_transport</strong> : <a href="../MocoPo/HttpTransport.html">HttpTransport</a>
+
+        <a class="method-permalink" href="#create_http_transport%3AHttpTransport-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Create and register an HTTP transport</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L198" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="create_sse_transport:SseTransport-instance-method">
+      <div class="signature">
+        
+        def <strong>create_sse_transport</strong> : <a href="../MocoPo/SseTransport.html">SseTransport</a>
+
+        <a class="method-permalink" href="#create_sse_transport%3ASseTransport-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Create and register an SSE transport</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L216" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="create_stdio_transport:StdioTransport-instance-method">
+      <div class="signature">
+        
+        def <strong>create_stdio_transport</strong> : <a href="../MocoPo/StdioTransport.html">StdioTransport</a>
+
+        <a class="method-permalink" href="#create_stdio_transport%3AStdioTransport-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Create and register a stdio transport</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L207" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -931,7 +1059,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -952,7 +1080,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/cancellation.cr#L134" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/cancellation.cr#L134" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -973,7 +1101,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/cancellation.cr#L149" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/cancellation.cr#L149" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -994,7 +1122,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L51" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1015,7 +1143,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L43" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1036,7 +1164,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1057,7 +1185,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L160" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1078,7 +1206,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L152" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1099,7 +1227,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L116" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1120,7 +1248,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L131" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L154" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1141,7 +1269,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/roots.cr#L410" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/roots.cr#L410" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1162,7 +1290,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L111" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1183,7 +1311,28 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L110" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L133" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="register_transport(transport:Transport):Transport-instance-method">
+      <div class="signature">
+        
+        def <strong>register_transport</strong>(transport : <a href="../MocoPo/Transport.html">Transport</a>) : <a href="../MocoPo/Transport.html">Transport</a>
+
+        <a class="method-permalink" href="#register_transport%28transport%3ATransport%29%3ATransport-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Create and register a transport</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L189" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1204,7 +1353,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L33" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1225,7 +1374,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/roots.cr#L407" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/roots.cr#L407" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1246,7 +1395,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo/roots.cr#L407" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/roots.cr#L407" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1267,7 +1416,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1288,7 +1437,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L78" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L89" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1309,7 +1458,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L83" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L100" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1330,7 +1479,28 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="transport_manager:TransportManager|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>transport_manager</strong> : <a href="../MocoPo/TransportManager.html">TransportManager</a> | Nil
+
+        <a class="method-permalink" href="#transport_manager%3ATransportManager%7CNil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Transport manager</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L48" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1351,7 +1521,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/7f74a2ec180d19903cd4eda3f76c8b87f239878c/src/mocopo.cr#L49" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>

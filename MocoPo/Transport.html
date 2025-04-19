@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="mocopo">
-  <title>MocoPo::TemperatureSamplingMethod - mocopo main</title>
+  <title>MocoPo::Transport - mocopo main</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -432,7 +432,7 @@
       
     </li>
   
-  <li class=" current" data-id="mocopo/MocoPo/TemperatureSamplingMethod" data-name="mocopo::temperaturesamplingmethod">
+  <li class=" " data-id="mocopo/MocoPo/TemperatureSamplingMethod" data-name="mocopo::temperaturesamplingmethod">
       <a href="../MocoPo/TemperatureSamplingMethod.html">TemperatureSamplingMethod</a>
       
     </li>
@@ -467,7 +467,7 @@
       
     </li>
   
-  <li class=" " data-id="mocopo/MocoPo/Transport" data-name="mocopo::transport">
+  <li class=" current" data-id="mocopo/MocoPo/Transport" data-name="mocopo::transport">
       <a href="../MocoPo/Transport.html">Transport</a>
       
     </li>
@@ -497,13 +497,13 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> MocoPo::<wbr>TemperatureSamplingMethod
+    abstract class
+  </span> MocoPo::<wbr>Transport
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../MocoPo/TemperatureSamplingMethod.html">MocoPo::TemperatureSamplingMethod</a></li><li class="superclass"><a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../MocoPo/Transport.html">MocoPo::Transport</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -517,7 +517,7 @@
     Overview
   </h2>
 
-  <p>Temperature sampling method</p>
+  <p>Transport interface for MCP communication</p>
 
 
 
@@ -528,6 +528,24 @@
 
 
 
+
+  <h2>
+    <a id="direct-known-subclasses" class="anchor" href="#direct-known-subclasses">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Direct Known Subclasses
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type"><a href="../MocoPo/HttpTransport.html">MocoPo::HttpTransport</a></li>
+    
+      <li class="other-type"><a href="../MocoPo/SseTransport.html">MocoPo::SseTransport</a></li>
+    
+      <li class="other-type"><a href="../MocoPo/StdioTransport.html">MocoPo::StdioTransport</a></li>
+    
+  </ul>
 
 
 
@@ -544,8 +562,8 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L513" target="_blank">
-        mocopo/sampling.cr
+      <a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L3" target="_blank">
+        mocopo/transport.cr
       </a>
     
     <br/>
@@ -569,6 +587,8 @@
       <li class="entry-summary">
         <a href="#new-class-method" class="signature"><strong>.new</strong></a>
         
+          <div class="summary"><p>Initialize a new transport</p></div>
+        
       </li>
     
   </ul>
@@ -590,16 +610,65 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#parameters_schema%3AJsonObject-instance-method" class="signature"><strong>#parameters_schema</strong> : JsonObject</a>
+        <a href="#close%3ANil-instance-method" class="signature"><strong>#close</strong> : Nil</a>
         
-          <div class="summary"><p>Return the parameters schema</p></div>
+          <div class="summary"><p>Close the transport</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#sample%28text%3AString%2Cparams%3AJsonObject%7CNil%2Ccontext%3AContext%29%3AJsonObject-instance-method" class="signature"><strong>#sample</strong>(text : String, params : JsonObject | Nil, context : Context) : JsonObject</a>
+        <a href="#on_close%3AProc%28Nil%29%7CNil-instance-method" class="signature"><strong>#on_close</strong> : Proc(Nil) | Nil</a>
         
-          <div class="summary"><p>Execute sampling</p></div>
+          <div class="summary"><p>Event handler for when the transport is closed</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_close%3D%28on_close%3AProc%28Nil%29%7CNil%29-instance-method" class="signature"><strong>#on_close=</strong>(on_close : Proc(Nil) | Nil)</a>
+        
+          <div class="summary"><p>Event handler for when the transport is closed</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_error%3AProc%28Exception%2CNil%29%7CNil-instance-method" class="signature"><strong>#on_error</strong> : Proc(Exception, Nil) | Nil</a>
+        
+          <div class="summary"><p>Event handler for when an error occurs</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_error%3D%28on_error%3AProc%28Exception%2CNil%29%7CNil%29-instance-method" class="signature"><strong>#on_error=</strong>(on_error : Proc(Exception, Nil) | Nil)</a>
+        
+          <div class="summary"><p>Event handler for when an error occurs</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_message%3AProc%28JsonObject%2CNil%29%7CNil-instance-method" class="signature"><strong>#on_message</strong> : Proc(JsonObject, Nil) | Nil</a>
+        
+          <div class="summary"><p>Event handler for when a message is received</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#on_message%3D%28on_message%3AProc%28JsonObject%2CNil%29%7CNil%29-instance-method" class="signature"><strong>#on_message=</strong>(on_message : Proc(JsonObject, Nil) | Nil)</a>
+        
+          <div class="summary"><p>Event handler for when a message is received</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#send%28message%3AJsonObject%29%3ANil-instance-method" class="signature"><strong>#send</strong>(message : JsonObject) : Nil</a>
+        
+          <div class="summary"><p>Send a JSON-RPC message</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#start%3ANil-instance-method" class="signature"><strong>#start</strong> : Nil</a>
+        
+          <div class="summary"><p>Start the transport</p></div>
         
       </li>
     
@@ -608,57 +677,6 @@
 
 
   <div class="methods-inherited">
-    
-      
-
-  <h3>Instance methods inherited from class <code><a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a></code></h3>
-  
-  
-    <a href="../MocoPo/SamplingMethod.html#description%3AString-instance-method" class="tooltip">
-      <span>description : String</span>
-    description</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#name%3AString-instance-method" class="tooltip">
-      <span>name : String</span>
-    name</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#parameters_schema%3AJsonObject-instance-method" class="tooltip">
-      <span>parameters_schema : JsonObject</span>
-    parameters_schema</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#sample%28text%3AString%2Cparams%3AJsonObject%7CNil%2Ccontext%3AContext%29%3AJsonObject-instance-method" class="tooltip">
-      <span>sample(text : String, params : JsonObject | Nil, context : Context) : JsonObject</span>
-    sample</a>, 
-    
-  
-    <a href="../MocoPo/SamplingMethod.html#to_json_object%3AJsonObject-instance-method" class="tooltip">
-      <span>to_json_object : JsonObject</span>
-    to_json_object</a>
-    
-  
-
-
-      
-
-  <h3>Constructor methods inherited from class <code><a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a></code></h3>
-  
-  
-    <a href="../MocoPo/SamplingMethod.html#new%28name%3AString%2Cdescription%3AString%29-class-method" class="tooltip">
-      <span>new(name : String, description : String)</span>
-    new</a>
-    
-  
-
-
-      
-
-
-      
-
-
     
       
 
@@ -706,10 +724,15 @@
         <a class="method-permalink" href="#new-class-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Initialize a new transport</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L514" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -730,52 +753,191 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="parameters_schema:JsonObject-instance-method">
+    <div class="entry-detail" id="close:Nil-instance-method">
       <div class="signature">
-        
-        def <strong>parameters_schema</strong> : <a href="../MocoPo/JsonObject.html">JsonObject</a>
+        abstract 
+        def <strong>close</strong> : Nil
 
-        <a class="method-permalink" href="#parameters_schema%3AJsonObject-instance-method">#</a>
+        <a class="method-permalink" href="#close%3ANil-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-            <div class="doc-inherited">
-              Description copied from class <a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a>
-            </div>
-          
-          <p>Return the parameters schema</p>
+          <p>Close the transport</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L518" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="sample(text:String,params:JsonObject|Nil,context:Context):JsonObject-instance-method">
+    <div class="entry-detail" id="on_close:Proc(Nil)|Nil-instance-method">
       <div class="signature">
         
-        def <strong>sample</strong>(text : String, params : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil, context : <a href="../MocoPo/Context.html">Context</a>) : <a href="../MocoPo/JsonObject.html">JsonObject</a>
+        def <strong>on_close</strong> : Proc(Nil) | Nil
 
-        <a class="method-permalink" href="#sample%28text%3AString%2Cparams%3AJsonObject%7CNil%2Ccontext%3AContext%29%3AJsonObject-instance-method">#</a>
+        <a class="method-permalink" href="#on_close%3AProc%28Nil%29%7CNil-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-            <div class="doc-inherited">
-              Description copied from class <a href="../MocoPo/SamplingMethod.html">MocoPo::SamplingMethod</a>
-            </div>
-          
-          <p>Execute sampling</p>
+          <p>Event handler for when the transport is closed</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/sampling.cr#L534" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L11" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_close=(on_close:Proc(Nil)|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_close=</strong>(on_close : Proc(Nil) | Nil)
+
+        <a class="method-permalink" href="#on_close%3D%28on_close%3AProc%28Nil%29%7CNil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Event handler for when the transport is closed</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L11" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_error:Proc(Exception,Nil)|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>on_error</strong> : Proc(Exception, Nil) | Nil
+
+        <a class="method-permalink" href="#on_error%3AProc%28Exception%2CNil%29%7CNil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Event handler for when an error occurs</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L8" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_error=(on_error:Proc(Exception,Nil)|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_error=</strong>(on_error : Proc(Exception, Nil) | Nil)
+
+        <a class="method-permalink" href="#on_error%3D%28on_error%3AProc%28Exception%2CNil%29%7CNil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Event handler for when an error occurs</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L8" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_message:Proc(JsonObject,Nil)|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>on_message</strong> : Proc(<a href="../MocoPo/JsonObject.html">JsonObject</a>, Nil) | Nil
+
+        <a class="method-permalink" href="#on_message%3AProc%28JsonObject%2CNil%29%7CNil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Event handler for when a message is received</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="on_message=(on_message:Proc(JsonObject,Nil)|Nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>on_message=</strong>(on_message : Proc(<a href="../MocoPo/JsonObject.html">JsonObject</a>, Nil) | Nil)
+
+        <a class="method-permalink" href="#on_message%3D%28on_message%3AProc%28JsonObject%2CNil%29%7CNil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Event handler for when a message is received</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L5" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="send(message:JsonObject):Nil-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>send</strong>(message : <a href="../MocoPo/JsonObject.html">JsonObject</a>) : Nil
+
+        <a class="method-permalink" href="#send%28message%3AJsonObject%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Send a JSON-RPC message</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L24" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="start:Nil-instance-method">
+      <div class="signature">
+        abstract 
+        def <strong>start</strong> : Nil
+
+        <a class="method-permalink" href="#start%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Start the transport</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/mocopo/blob/e371ddb3c8849c28be478c16b599d6298291fadc/src/mocopo/transport.cr#L21" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -152,6 +152,11 @@
       
     </li>
   
+  <li class=" " data-id="mocopo/MocoPo/HttpTransport" data-name="mocopo::httptransport">
+      <a href="MocoPo/HttpTransport.html">HttpTransport</a>
+      
+    </li>
+  
   <li class=" " data-id="mocopo/MocoPo/ImageContent" data-name="mocopo::imagecontent">
       <a href="MocoPo/ImageContent.html">ImageContent</a>
       
@@ -417,6 +422,16 @@
       
     </li>
   
+  <li class=" " data-id="mocopo/MocoPo/SseTransport" data-name="mocopo::ssetransport">
+      <a href="MocoPo/SseTransport.html">SseTransport</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/StdioTransport" data-name="mocopo::stdiotransport">
+      <a href="MocoPo/StdioTransport.html">StdioTransport</a>
+      
+    </li>
+  
   <li class=" " data-id="mocopo/MocoPo/TemperatureSamplingMethod" data-name="mocopo::temperaturesamplingmethod">
       <a href="MocoPo/TemperatureSamplingMethod.html">TemperatureSamplingMethod</a>
       
@@ -452,6 +467,21 @@
       
     </li>
   
+  <li class=" " data-id="mocopo/MocoPo/Transport" data-name="mocopo::transport">
+      <a href="MocoPo/Transport.html">Transport</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/TransportManager" data-name="mocopo::transportmanager">
+      <a href="MocoPo/TransportManager.html">TransportManager</a>
+      
+    </li>
+  
+  <li class=" " data-id="mocopo/MocoPo/Utils" data-name="mocopo::utils">
+      <a href="MocoPo/Utils.html">Utils</a>
+      
+    </li>
+  
 </ul>
 
       
@@ -476,8 +506,10 @@
   </svg>
 </a>Overview</h2>
 <p>MocoPo enables you to easily build MCP servers in Crystal.<br />
-It is based on Kemal for high-performance and lightweight HTTP handling,<br />
-and provides a DSL-style API for intuitive management and extension of tools, resources, and prompts.</p>
+It provides a flexible transport layer supporting multiple communication methods (HTTP, SSE, stdio),<br />
+and offers a DSL-style API for intuitive management of tools, resources, and prompts.</p>
+<p>The library uses Kemal for HTTP handling but abstracts communication through a transport layer,<br />
+allowing for different communication mechanisms to be used interchangeably.</p>
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -494,6 +526,46 @@ and provides a DSL-style API for intuitive management and extension of tools, re
 <p>Run <code>shards install</code></p>
 </li>
 </ol>
+<h2><a id="features" class="anchor" href="#features">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Features</h2>
+<ul>
+<li>
+<p><strong>Multiple Transport Support</strong>:</p>
+<ul>
+<li>HTTP transport for web-based applications</li>
+<li>SSE (Server-Sent Events) transport for real-time notifications</li>
+<li>stdio transport for command-line tools and local integrations</li>
+<li>Extensible architecture for custom transports</li>
+</ul>
+</li>
+<li>
+<p><strong>Tool Management</strong>:</p>
+<ul>
+<li>Register and manage tools with rich argument schemas</li>
+<li>Support for nested arguments, arrays, and objects</li>
+<li>Execution callbacks with context</li>
+</ul>
+</li>
+<li>
+<p><strong>Resource Management</strong>:</p>
+<ul>
+<li>URI-based resource registration</li>
+<li>Content providers with dynamic generation</li>
+<li>MIME type support</li>
+</ul>
+</li>
+<li>
+<p><strong>Notification System</strong>:</p>
+<ul>
+<li>Real-time notifications across all transports</li>
+<li>List change notifications for tools, resources, and prompts</li>
+<li>Resource update notifications</li>
+</ul>
+</li>
+</ul>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -506,6 +578,11 @@ server <span class="o">=</span> <span class="t">MocoPo</span><span class="t">::<
   name: <span class="s">&quot;MyMCPServer&quot;</span>,
   version: <span class="s">&quot;1.0.0&quot;</span>
 )
+
+<span class="c"># By default, HTTP transport is created automatically</span>
+<span class="c"># You can create additional transports as needed</span>
+stdio_transport <span class="o">=</span> server.create_stdio_transport
+sse_transport <span class="o">=</span> server.create_sse_transport
 
 <span class="c"># Register a tool with arguments and execution callback</span>
 greet_tool <span class="o">=</span> server.register_tool(<span class="s">&quot;greet&quot;</span>, <span class="s">&quot;Greet someone by name&quot;</span>)
@@ -539,7 +616,7 @@ readme_resource.on_read <span class="k">do</span>
   )
 <span class="k">end</span>
 
-<span class="c"># Start the server on port 3000</span>
+<span class="c"># Start the server on port 3000 (starts all transports)</span>
 server.start</code></pre>
 <p>For more examples, see the <a href="examples/">examples</a> directory.</p>
 <h2><a id="development" class="anchor" href="#development">
