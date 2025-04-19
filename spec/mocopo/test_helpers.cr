@@ -1,21 +1,9 @@
-require "../spec_helper"
-
 module MocoPo
-  # Test server for testing
-  class TestServer < Server
-    def initialize
-      super("TestServer", "1.0.0", setup_routes: false, setup_transports: false)
-    end
-  end
-
-  # Test transport for testing
-  class TestManagerTransport < Transport
-    property started : Bool = false
-    property closed : Bool = false
-    property sent_messages : Array(JsonObject) = [] of JsonObject
-    property message_handler_called : Bool = false
-    property error_handler_called : Bool = false
-    property close_handler_called : Bool = false
+  # Test implementation of the abstract Transport class for testing
+  class TestTransport < Transport
+    getter started : Bool = false
+    getter closed : Bool = false
+    getter sent_messages : Array(JsonObject) = [] of JsonObject
 
     def start : Nil
       @started = true
@@ -29,26 +17,19 @@ module MocoPo
       @closed = true
     end
 
-    # Helper methods to simulate events
+    # Helper method to simulate receiving a message
     def simulate_message(message : JsonObject) : Nil
-      if handler = @on_message
-        @message_handler_called = true
-        handler.call(message)
-      end
+      handle_message(message)
     end
 
+    # Helper method to simulate an error
     def simulate_error(error : Exception) : Nil
-      if handler = @on_error
-        @error_handler_called = true
-        handler.call(error)
-      end
+      handle_error(error)
     end
 
+    # Helper method to simulate closing
     def simulate_close : Nil
-      if handler = @on_close
-        @close_handler_called = true
-        handler.call
-      end
+      handle_close
     end
   end
 end

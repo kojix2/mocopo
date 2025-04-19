@@ -1,6 +1,7 @@
 require "kemal"
 require "../transport"
 require "../json_rpc"
+require "../utils"
 
 module MocoPo
   # HTTP transport implementation for MCP
@@ -23,7 +24,12 @@ module MocoPo
 
           # Parse as JSON
           json = JSON.parse(request_body)
-          json_object = json.as_h.transform_keys(&.to_s)
+
+          # Convert to JsonObject
+          json_object = {} of String => JsonValue
+          json.as_h.each do |k, v|
+            json_object[k.to_s] = Utils.to_json_value(v)
+          end
 
           # Process the message
           handle_message(json_object)
