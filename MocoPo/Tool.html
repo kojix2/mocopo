@@ -544,7 +544,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L5" target="_blank">
+      <a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L5" target="_blank">
         mocopo/tools.cr
       </a>
     
@@ -567,14 +567,14 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AHash%28String%2CJSON%3A%3AAny%29%2C%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-class-method" class="signature"><strong>.new</strong>(name : String, description : String, input_schema : Hash(String, JSON::Any), &callback : Hash(String, JSON::Any) | Nil, Context | Nil -> Hash(String, String | Array(Hash(String, String))))</a>
+        <a href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AJsonObject%2C%26callback%3AJsonObject%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-class-method" class="signature"><strong>.new</strong>(name : String, description : String, input_schema : JsonObject, &callback : JsonObject | Nil, Context | Nil -> Hash(String, String | Array(Hash(String, String))))</a>
         
           <div class="summary"><p>Initialize a new tool</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AHash%28String%2CJSON%3A%3AAny%29%29-class-method" class="signature"><strong>.new</strong>(name : String, description : String, input_schema : Hash(String, JSON::Any))</a>
+        <a href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AJsonObject%29-class-method" class="signature"><strong>.new</strong>(name : String, description : String, input_schema : JsonObject)</a>
         
           <div class="summary"><p>Initialize a new tool without callback</p></div>
         
@@ -662,14 +662,14 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#execute%28arguments%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%2Ccontext%3AContext%7CNil%3Dnil%29%3AHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29-instance-method" class="signature"><strong>#execute</strong>(arguments : Hash(String, JSON::Any) | Nil, context : Context | Nil = <span class="n">nil</span>) : Hash(String, String | Array(Hash(String, String)))</a>
+        <a href="#execute%28arguments%3AJsonObject%7CNil%2Ccontext%3AContext%7CNil%3Dnil%29%3AHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29-instance-method" class="signature"><strong>#execute</strong>(arguments : JsonObject | Nil, context : Context | Nil = <span class="n">nil</span>) : Hash(String, String | Array(Hash(String, String)))</a>
         
           <div class="summary"><p>Execute the tool with the given arguments</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#input_schema%3AHash%28String%2CJSON%3A%3AAny%29-instance-method" class="signature"><strong>#input_schema</strong> : Hash(String, JSON::Any)</a>
+        <a href="#input_schema%3AJsonObject-instance-method" class="signature"><strong>#input_schema</strong> : JsonObject</a>
         
           <div class="summary"><p>JSON Schema defining expected parameters</p></div>
         
@@ -683,7 +683,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#on_execute%28%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-instance-method" class="signature"><strong>#on_execute</strong>(&callback : Hash(String, JSON::Any) | Nil, Context | Nil -> Hash(String, String | Array(Hash(String, String))))</a>
+        <a href="#on_execute%28%26callback%3AJsonObject%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-instance-method" class="signature"><strong>#on_execute</strong>(&callback : JsonObject | Nil, Context | Nil -> Hash(String, String | Array(Hash(String, String))))</a>
         
           <div class="summary"><p>Set the execution callback</p></div>
         
@@ -740,12 +740,12 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(name:String,description:String,input_schema:Hash(String,JSON::Any),&amp;callback:Hash(String,JSON::Any)|Nil,Context|Nil-&gt;Hash(String,String|Array(Hash(String,String))))-class-method">
+    <div class="entry-detail" id="new(name:String,description:String,input_schema:JsonObject,&amp;callback:JsonObject|Nil,Context|Nil-&gt;Hash(String,String|Array(Hash(String,String))))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(name : String, description : String, input_schema : Hash(String, JSON::Any), &callback : Hash(String, JSON::Any) | Nil, <a href="../MocoPo/Context.html">Context</a> | Nil -> Hash(String, String | Array(Hash(String, String))))
+        def self.<strong>new</strong>(name : String, description : String, input_schema : <a href="../MocoPo/JsonObject.html">JsonObject</a>, &callback : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil, <a href="../MocoPo/Context.html">Context</a> | Nil -> Hash(String, String | Array(Hash(String, String))))
 
-        <a class="method-permalink" href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AHash%28String%2CJSON%3A%3AAny%29%2C%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AJsonObject%2C%26callback%3AJsonObject%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -756,17 +756,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(name:String,description:String,input_schema:Hash(String,JSON::Any))-class-method">
+    <div class="entry-detail" id="new(name:String,description:String,input_schema:JsonObject)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(name : String, description : String, input_schema : Hash(String, JSON::Any))
+        def self.<strong>new</strong>(name : String, description : String, input_schema : <a href="../MocoPo/JsonObject.html">JsonObject</a>)
 
-        <a class="method-permalink" href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AHash%28String%2CJSON%3A%3AAny%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28name%3AString%2Cdescription%3AString%2Cinput_schema%3AJsonObject%29-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -777,7 +777,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -814,7 +814,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -835,7 +835,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -856,7 +856,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L75" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L75" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -877,7 +877,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L59" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -898,7 +898,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -919,7 +919,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L52" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L52" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -940,7 +940,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L66" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -961,7 +961,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -982,17 +982,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="execute(arguments:Hash(String,JSON::Any)|Nil,context:Context|Nil=nil):Hash(String,String|Array(Hash(String,String)))-instance-method">
+    <div class="entry-detail" id="execute(arguments:JsonObject|Nil,context:Context|Nil=nil):Hash(String,String|Array(Hash(String,String)))-instance-method">
       <div class="signature">
         
-        def <strong>execute</strong>(arguments : Hash(String, JSON::Any) | Nil, context : <a href="../MocoPo/Context.html">Context</a> | Nil = <span class="n">nil</span>) : Hash(String, String | Array(Hash(String, String)))
+        def <strong>execute</strong>(arguments : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil, context : <a href="../MocoPo/Context.html">Context</a> | Nil = <span class="n">nil</span>) : Hash(String, String | Array(Hash(String, String)))
 
-        <a class="method-permalink" href="#execute%28arguments%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%2Ccontext%3AContext%7CNil%3Dnil%29%3AHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#execute%28arguments%3AJsonObject%7CNil%2Ccontext%3AContext%7CNil%3Dnil%29%3AHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1003,17 +1003,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L134" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L137" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="input_schema:Hash(String,JSON::Any)-instance-method">
+    <div class="entry-detail" id="input_schema:JsonObject-instance-method">
       <div class="signature">
         
-        def <strong>input_schema</strong> : Hash(String, JSON::Any)
+        def <strong>input_schema</strong> : <a href="../MocoPo/JsonObject.html">JsonObject</a>
 
-        <a class="method-permalink" href="#input_schema%3AHash%28String%2CJSON%3A%3AAny%29-instance-method">#</a>
+        <a class="method-permalink" href="#input_schema%3AJsonObject-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1024,7 +1024,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1045,17 +1045,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_execute(&amp;callback:Hash(String,JSON::Any)|Nil,Context|Nil-&gt;Hash(String,String|Array(Hash(String,String))))-instance-method">
+    <div class="entry-detail" id="on_execute(&amp;callback:JsonObject|Nil,Context|Nil-&gt;Hash(String,String|Array(Hash(String,String))))-instance-method">
       <div class="signature">
         
-        def <strong>on_execute</strong>(&callback : Hash(String, JSON::Any) | Nil, <a href="../MocoPo/Context.html">Context</a> | Nil -> Hash(String, String | Array(Hash(String, String))))
+        def <strong>on_execute</strong>(&callback : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil, <a href="../MocoPo/Context.html">Context</a> | Nil -> Hash(String, String | Array(Hash(String, String))))
 
-        <a class="method-permalink" href="#on_execute%28%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#on_execute%28%26callback%3AJsonObject%7CNil%2CContext%7CNil-%3EHash%28String%2CString%7CArray%28Hash%28String%2CString%29%29%29%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1066,7 +1066,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1087,7 +1087,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/tools.cr#L199" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/tools.cr#L202" target="_blank">View source</a>]
         
       </div>
     </div>

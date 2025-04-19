@@ -544,7 +544,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L119" target="_blank">
+      <a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L119" target="_blank">
         mocopo/prompts.cr
       </a>
     
@@ -567,7 +567,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28name%3AString%2Cdescription%3AString%7CNil%3Dnil%2C%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil-%3EArray%28PromptMessage%29%29-class-method" class="signature"><strong>.new</strong>(name : String, description : String | Nil = <span class="n">nil</span>, &callback : Hash(String, JSON::Any) | Nil -> Array(PromptMessage))</a>
+        <a href="#new%28name%3AString%2Cdescription%3AString%7CNil%3Dnil%2C%26callback%3AJsonObject%7CNil-%3EArray%28PromptMessage%29%29-class-method" class="signature"><strong>.new</strong>(name : String, description : String | Nil = <span class="n">nil</span>, &callback : JsonObject | Nil -> Array(PromptMessage))</a>
         
           <div class="summary"><p>Initialize a new prompt</p></div>
         
@@ -620,7 +620,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#execute%28arguments%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%29%3AArray%28PromptMessage%29-instance-method" class="signature"><strong>#execute</strong>(arguments : Hash(String, JSON::Any) | Nil) : Array(PromptMessage)</a>
+        <a href="#execute%28arguments%3AJsonObject%7CNil%29%3AArray%28PromptMessage%29-instance-method" class="signature"><strong>#execute</strong>(arguments : JsonObject | Nil) : Array(PromptMessage)</a>
         
           <div class="summary"><p>Execute the prompt with the given arguments</p></div>
         
@@ -634,7 +634,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#on_execute%28%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil-%3EArray%28PromptMessage%29%29-instance-method" class="signature"><strong>#on_execute</strong>(&callback : Hash(String, JSON::Any) | Nil -> Array(PromptMessage))</a>
+        <a href="#on_execute%28%26callback%3AJsonObject%7CNil-%3EArray%28PromptMessage%29%29-instance-method" class="signature"><strong>#on_execute</strong>(&callback : JsonObject | Nil -> Array(PromptMessage))</a>
         
           <div class="summary"><p>Set the execution callback</p></div>
         
@@ -691,12 +691,12 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(name:String,description:String|Nil=nil,&amp;callback:Hash(String,JSON::Any)|Nil-&gt;Array(PromptMessage))-class-method">
+    <div class="entry-detail" id="new(name:String,description:String|Nil=nil,&amp;callback:JsonObject|Nil-&gt;Array(PromptMessage))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(name : String, description : String | Nil = <span class="n">nil</span>, &callback : Hash(String, JSON::Any) | Nil -> Array(<a href="../MocoPo/PromptMessage.html">PromptMessage</a>))
+        def self.<strong>new</strong>(name : String, description : String | Nil = <span class="n">nil</span>, &callback : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil -> Array(<a href="../MocoPo/PromptMessage.html">PromptMessage</a>))
 
-        <a class="method-permalink" href="#new%28name%3AString%2Cdescription%3AString%7CNil%3Dnil%2C%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil-%3EArray%28PromptMessage%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28name%3AString%2Cdescription%3AString%7CNil%3Dnil%2C%26callback%3AJsonObject%7CNil-%3EArray%28PromptMessage%29%29-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -707,7 +707,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L133" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L133" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -728,7 +728,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L139" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -765,7 +765,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L151" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L151" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -786,7 +786,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L127" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L127" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -807,17 +807,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L124" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L124" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="execute(arguments:Hash(String,JSON::Any)|Nil):Array(PromptMessage)-instance-method">
+    <div class="entry-detail" id="execute(arguments:JsonObject|Nil):Array(PromptMessage)-instance-method">
       <div class="signature">
         
-        def <strong>execute</strong>(arguments : Hash(String, JSON::Any) | Nil) : Array(<a href="../MocoPo/PromptMessage.html">PromptMessage</a>)
+        def <strong>execute</strong>(arguments : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil) : Array(<a href="../MocoPo/PromptMessage.html">PromptMessage</a>)
 
-        <a class="method-permalink" href="#execute%28arguments%3AHash%28String%2CJSON%3A%3AAny%29%7CNil%29%3AArray%28PromptMessage%29-instance-method">#</a>
+        <a class="method-permalink" href="#execute%28arguments%3AJsonObject%7CNil%29%3AArray%28PromptMessage%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -828,7 +828,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L157" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L157" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -849,17 +849,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L121" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L121" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="on_execute(&amp;callback:Hash(String,JSON::Any)|Nil-&gt;Array(PromptMessage))-instance-method">
+    <div class="entry-detail" id="on_execute(&amp;callback:JsonObject|Nil-&gt;Array(PromptMessage))-instance-method">
       <div class="signature">
         
-        def <strong>on_execute</strong>(&callback : Hash(String, JSON::Any) | Nil -> Array(<a href="../MocoPo/PromptMessage.html">PromptMessage</a>))
+        def <strong>on_execute</strong>(&callback : <a href="../MocoPo/JsonObject.html">JsonObject</a> | Nil -> Array(<a href="../MocoPo/PromptMessage.html">PromptMessage</a>))
 
-        <a class="method-permalink" href="#on_execute%28%26callback%3AHash%28String%2CJSON%3A%3AAny%29%7CNil-%3EArray%28PromptMessage%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#on_execute%28%26callback%3AJsonObject%7CNil-%3EArray%28PromptMessage%29%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -870,7 +870,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L145" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L145" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -891,7 +891,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/mocopo/blob/9f3b467560ceffadd58b47997866edf61fad9cfe/src/mocopo/prompts.cr#L172" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/mocopo/blob/66f02491eb65814f1ea643c945f5ff903ca5cedb/src/mocopo/prompts.cr#L172" target="_blank">View source</a>]
         
       </div>
     </div>

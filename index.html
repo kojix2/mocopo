@@ -565,6 +565,15 @@ allowing for different communication mechanisms to be used interchangeably.</p>
 <li>Resource update notifications</li>
 </ul>
 </li>
+<li>
+<p><strong>Consistent JSON Handling</strong>:</p>
+<ul>
+<li>Uses <code>JsonValue</code> type consistently throughout the codebase</li>
+<li>Type-safe JSON handling with clear interfaces</li>
+<li>Utility functions for converting between <code>JsonValue</code> and Crystal's <code>JSON::Any</code> when needed</li>
+<li>Simplified JSON schema generation and validation</li>
+</ul>
+</li>
 </ul>
 <h2><a id="usage" class="anchor" href="#usage">
   <svg class="octicon-link" aria-hidden="true">
@@ -589,7 +598,13 @@ greet_tool <span class="o">=</span> server.register_tool(<span class="s">&quot;g
 greet_tool
   .argument_string(<span class="s">&quot;name&quot;</span>, <span class="n">true</span>, <span class="s">&quot;Name to greet&quot;</span>)
   .on_execute <span class="k">do</span> <span class="o">|</span>args<span class="o">|</span>
-    name <span class="o">=</span> args.try <span class="o">&amp;</span>.[<span class="s">&quot;name&quot;</span>]?.try <span class="o">&amp;</span>.as_s <span class="o">||</span> <span class="s">&quot;World&quot;</span>
+    <span class="c"># args is a JsonObject (Hash(String, JsonValue))</span>
+    name <span class="o">=</span> <span class="s">&quot;World&quot;</span>
+    <span class="k">if</span> args <span class="o">&amp;&amp;</span> args[<span class="s">&quot;name&quot;</span>]?
+      name_value <span class="o">=</span> args[<span class="s">&quot;name&quot;</span>]
+      name <span class="o">=</span> name_value.<span class="k">is_a?</span>(<span class="t">String</span>) ? name_value : name_value.to_s
+    <span class="k">end</span>
+
     {
       <span class="s">&quot;content&quot;</span> <span class="o">=&gt;</span> [
         {
@@ -640,14 +655,6 @@ server.start</code></pre>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create a new Pull Request</li>
 </ol>
-<h2><a id="contributors" class="anchor" href="#contributors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Contributors</h2>
-<ul>
-<li><a href="https://github.com/your-github-user">kojix2</a> - creator and maintainer</li>
-</ul>
 </div>
 </body>
 </html>
