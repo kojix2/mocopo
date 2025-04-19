@@ -1,15 +1,19 @@
 require "../src/mocopo"
 
-# Create a new MCP server
+# Create a new MCP server with both HTTP and SSE transports enabled
 server = MocoPo::Server.new(
   name: "SimpleMCPServer",
-  version: "1.0.0"
+  version: "1.0.0",
+  enabled_transports: [:http, :sse]
 )
 
-# By default, the HTTP transport is created automatically
-# You can access it explicitly if needed
+# You can access transports explicitly if needed
 http_transport = server.transport_manager.try do |manager|
   manager.@transports.find { |t| t.is_a?(MocoPo::HttpTransport) }
+end
+
+sse_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::SseTransport) }
 end
 
 # Register a sample tool
@@ -43,5 +47,6 @@ puts "Starting MCP server on http://localhost:3000/mcp"
 puts "Press Ctrl+C to stop"
 puts "Registered tools: #{server.tool_manager.list.map(&.name).join(", ")}"
 puts "Registered resources: #{server.resource_manager.list.map(&.name).join(", ")}"
-puts "Active transports: HTTP (default)"
+puts "Active transports: HTTP (default), SSE"
+puts "SSE endpoint: http://localhost:3000/sse"
 server.start

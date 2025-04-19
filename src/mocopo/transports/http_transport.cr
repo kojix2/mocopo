@@ -35,7 +35,7 @@ module MocoPo
           handle_message(json_object)
 
           # Return JSON-RPC response
-          env.response.content_type = "application/json"
+          env.response.headers["Content-Type"] = "application/json"
           response = process_jsonrpc(json_object)
           response.to_json
         rescue ex : JSON::ParseException

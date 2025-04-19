@@ -25,14 +25,16 @@ module MocoPo
     def start : Nil
       return if @running
 
+      puts "Starting SSE transport..."
       @running = true
 
       # Setup SSE endpoint for server-to-client streaming
       get "/sse" do |env|
-        env.response.headers.add("Content-Type", "text/event-stream")
-        env.response.headers.add("Cache-Control", "no-cache")
-        env.response.headers.add("Connection", "keep-alive")
-        env.response.headers.add("Access-Control-Allow-Origin", "*")
+        # Set Content-Type header first and ensure it's set correctly
+        env.response.content_type = "text/event-stream"
+        env.response.headers["Cache-Control"] = "no-cache"
+        env.response.headers["Connection"] = "keep-alive"
+        env.response.headers["Access-Control-Allow-Origin"] = "*"
 
         # Add client to connected clients
         @clients << env.response
@@ -79,7 +81,7 @@ module MocoPo
           handle_message(json_object)
 
           # Return JSON-RPC response
-          env.response.content_type = "application/json"
+          env.response.headers["Content-Type"] = "application/json"
           response = process_jsonrpc(json_object)
           response.to_json
         rescue ex : JSON::ParseException

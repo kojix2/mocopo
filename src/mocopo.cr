@@ -54,7 +54,7 @@ module MocoPo
     getter version : String
 
     # Initialize a new MCP server
-    def initialize(@name : String, @version : String, setup_routes : Bool = true, setup_transports : Bool = true)
+    def initialize(@name : String, @version : String, setup_routes : Bool = true, setup_transports : Bool = true, @enabled_transports : Array(Symbol) = [:http])
       # Create managers
       @tool_manager = ToolManager.new
       @resource_manager = ResourceManager.new
@@ -179,9 +179,11 @@ module MocoPo
 
     # Setup default transports
     private def setup_default_transports
-      # Create HTTP transport (for backward compatibility)
       if transport_manager = @transport_manager
-        transport_manager.create_http_transport
+        # Create transports based on enabled_transports configuration
+        transport_manager.create_http_transport if @enabled_transports.includes?(:http)
+        transport_manager.create_sse_transport if @enabled_transports.includes?(:sse)
+        transport_manager.create_stdio_transport if @enabled_transports.includes?(:stdio)
       end
     end
 

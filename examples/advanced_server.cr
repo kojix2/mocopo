@@ -1,15 +1,24 @@
 require "../src/mocopo"
 
-# Create a new MCP server
+# Create a new MCP server with all transports enabled
 server = MocoPo::Server.new(
   name: "AdvancedMCPServer",
-  version: "1.0.0"
+  version: "1.0.0",
+  enabled_transports: [:http, :sse, :stdio]
 )
 
-# Create and register multiple transports
-http_transport = server.create_http_transport   # Default HTTP transport
-stdio_transport = server.create_stdio_transport # Standard input/output transport
-sse_transport = server.create_sse_transport     # Server-Sent Events transport
+# Access the transports if needed
+http_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::HttpTransport) }
+end
+
+stdio_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::StdioTransport) }
+end
+
+sse_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::SseTransport) }
+end
 
 puts "Configured multiple transports:"
 puts "- HTTP: POST to /mcp"

@@ -1,7 +1,11 @@
 require "../src/mocopo"
 
-# Create a new MCP server
-server = MocoPo::Server.new("transport-server", "1.0.0")
+# Create a new MCP server with all transports enabled
+server = MocoPo::Server.new(
+  name: "transport-server",
+  version: "1.0.0",
+  enabled_transports: [:http, :stdio, :sse]
+)
 
 # Register a simple tool
 server.register_tool("echo", "Echo the input") do |tool|
@@ -32,10 +36,18 @@ server.register_prompt("greeting", "A greeting prompt") do |prompt|
   prompt.add_parameter("name", "Name to greet", "string", required: true)
 end
 
-# Create and register transports
-http_transport = server.create_http_transport
-stdio_transport = server.create_stdio_transport
-sse_transport = server.create_sse_transport
+# Access the transports if needed
+http_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::HttpTransport) }
+end
+
+stdio_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::StdioTransport) }
+end
+
+sse_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::SseTransport) }
+end
 
 puts "Starting MCP server with multiple transports:"
 puts "- HTTP transport: POST to /mcp"
