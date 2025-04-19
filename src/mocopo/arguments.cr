@@ -24,31 +24,31 @@ module MocoPo
     end
 
     # Convert to JSON Schema
-    def to_json_schema : Hash(String, JSON::Any)
+    def to_json_schema : JsonObject
       schema = {
-        "type" => JSON::Any.new(@type),
-      } of String => JSON::Any
+        "type" => @type,
+      } of String => JsonValue
 
       # Add description if present
-      schema["description"] = JSON::Any.new(@description) if @description
+      schema["description"] = @description if @description
 
       # Add item type for arrays
       if @type == "array" && @item_type
-        schema["items"] = JSON::Any.new({"type" => JSON::Any.new(@item_type)} of String => JSON::Any)
+        schema["items"] = {"type" => @item_type} of String => JsonValue
       end
 
       # Add nested properties for objects
       if @type == "object" && @nested_arguments
-        properties = {} of String => JSON::Any
-        required = [] of JSON::Any
+        properties = {} of String => JsonValue
+        required = [] of JsonValue
 
         @nested_arguments.not_nil!.each do |arg|
-          properties[arg.name] = JSON::Any.new(arg.to_json_schema)
-          required << JSON::Any.new(arg.name) if arg.required
+          properties[arg.name] = arg.to_json_schema
+          required << arg.name if arg.required
         end
 
-        schema["properties"] = JSON::Any.new(properties)
-        schema["required"] = JSON::Any.new(required) unless required.empty?
+        schema["properties"] = properties
+        schema["required"] = required unless required.empty?
       end
 
       schema
@@ -108,21 +108,21 @@ module MocoPo
     end
 
     # Build JSON Schema from arguments
-    def to_json_schema : Hash(String, JSON::Any)
-      properties = {} of String => JSON::Any
-      required = [] of JSON::Any
+    def to_json_schema : JsonObject
+      properties = {} of String => JsonValue
+      required = [] of JsonValue
 
       @arguments.each do |arg|
-        properties[arg.name] = JSON::Any.new(arg.to_json_schema)
-        required << JSON::Any.new(arg.name) if arg.required
+        properties[arg.name] = arg.to_json_schema
+        required << arg.name if arg.required
       end
 
       schema = {
-        "type"       => JSON::Any.new("object"),
-        "properties" => JSON::Any.new(properties),
-      } of String => JSON::Any
+        "type"       => "object",
+        "properties" => properties,
+      } of String => JsonValue
 
-      schema["required"] = JSON::Any.new(required) unless required.empty?
+      schema["required"] = required unless required.empty?
 
       schema
     end

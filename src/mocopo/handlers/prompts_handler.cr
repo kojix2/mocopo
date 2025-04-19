@@ -55,11 +55,11 @@ module MocoPo
       prompt = @server.prompt_manager.get(name).not_nil!
 
       begin
-        # Convert arguments to Hash(String, JSON::Any)? if needed
-        json_any_args = arguments ? json_value_to_json_any(arguments).as_h : nil
+        # Use arguments directly as JsonObject
+        json_args = arguments
 
         # Execute the prompt
-        messages = prompt.execute(json_any_args)
+        messages = prompt.execute(json_args)
 
         # Build result with explicit type
         result = {} of String => JsonValue

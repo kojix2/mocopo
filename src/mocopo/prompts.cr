@@ -127,10 +127,10 @@ module MocoPo
     getter arguments : Array(PromptArgument)
 
     # Execution callback
-    @callback : Proc(Hash(String, JSON::Any)?, Array(PromptMessage))?
+    @callback : Proc(JsonObject?, Array(PromptMessage))?
 
     # Initialize a new prompt
-    def initialize(@name : String, @description : String? = nil, &callback : Hash(String, JSON::Any)? -> Array(PromptMessage))
+    def initialize(@name : String, @description : String? = nil, &callback : JsonObject? -> Array(PromptMessage))
       @arguments = [] of PromptArgument
       @callback = callback
     end
@@ -142,7 +142,7 @@ module MocoPo
     end
 
     # Set the execution callback
-    def on_execute(&callback : Hash(String, JSON::Any)? -> Array(PromptMessage))
+    def on_execute(&callback : JsonObject? -> Array(PromptMessage))
       @callback = callback
       self
     end
@@ -154,7 +154,7 @@ module MocoPo
     end
 
     # Execute the prompt with the given arguments
-    def execute(arguments : Hash(String, JSON::Any)?) : Array(PromptMessage)
+    def execute(arguments : JsonObject?) : Array(PromptMessage)
       if @callback
         @callback.not_nil!.call(arguments)
       else

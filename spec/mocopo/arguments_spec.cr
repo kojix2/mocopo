@@ -76,8 +76,8 @@ describe MocoPo::Argument do
     )
 
     schema = arg.to_json_schema
-    schema["type"].as_s.should eq("string")
-    schema["description"].as_s.should eq("A name")
+    schema["type"].should eq("string")
+    schema["description"].should eq("A name")
   end
 
   it "converts array arguments to JSON Schema" do
@@ -90,9 +90,13 @@ describe MocoPo::Argument do
     )
 
     schema = arg.to_json_schema
-    schema["type"].as_s.should eq("array")
-    schema["description"].as_s.should eq("Tags")
-    schema["items"].as_h["type"].as_s.should eq("string")
+    schema["type"].should eq("array")
+    schema["description"].should eq("Tags")
+
+    items = schema["items"]
+    items.is_a?(Hash).should be_true
+    items_hash = items.as(Hash)
+    items_hash["type"].should eq("string")
   end
 
   it "converts object arguments to JSON Schema" do
@@ -110,13 +114,21 @@ describe MocoPo::Argument do
     )
 
     schema = arg.to_json_schema
-    schema["type"].as_s.should eq("object")
-    schema["description"].as_s.should eq("Person information")
-    schema["properties"].as_h.has_key?("first_name").should be_true
-    schema["properties"].as_h.has_key?("last_name").should be_true
-    schema["required"].as_a.size.should eq(2)
-    schema["required"].as_a.should contain(JSON::Any.new("first_name"))
-    schema["required"].as_a.should contain(JSON::Any.new("last_name"))
+    schema["type"].should eq("object")
+    schema["description"].should eq("Person information")
+
+    properties = schema["properties"]
+    properties.is_a?(Hash).should be_true
+    properties_hash = properties.as(Hash)
+    properties_hash.has_key?("first_name").should be_true
+    properties_hash.has_key?("last_name").should be_true
+
+    required = schema["required"]
+    required.is_a?(Array).should be_true
+    required_array = required.as(Array)
+    required_array.size.should eq(2)
+    required_array.should contain("first_name")
+    required_array.should contain("last_name")
   end
 end
 
@@ -209,11 +221,19 @@ describe MocoPo::ArgumentBuilder do
     builder.number("age", false, "Age in years")
 
     schema = builder.to_json_schema
-    schema["type"].as_s.should eq("object")
-    schema["properties"].as_h.has_key?("name").should be_true
-    schema["properties"].as_h.has_key?("age").should be_true
-    schema["required"].as_a.size.should eq(1)
-    schema["required"].as_a.should contain(JSON::Any.new("name"))
-    schema["required"].as_a.should_not contain(JSON::Any.new("age"))
+    schema["type"].should eq("object")
+
+    properties = schema["properties"]
+    properties.is_a?(Hash).should be_true
+    properties_hash = properties.as(Hash)
+    properties_hash.has_key?("name").should be_true
+    properties_hash.has_key?("age").should be_true
+
+    required = schema["required"]
+    required.is_a?(Array).should be_true
+    required_array = required.as(Array)
+    required_array.size.should eq(1)
+    required_array.should contain("name")
+    required_array.should_not contain("age")
   end
 end

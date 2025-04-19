@@ -55,15 +55,8 @@ module MocoPo
       tool = @server.tool_manager.get(name).not_nil!
 
       begin
-        # Convert arguments to Hash(String, JSON::Any)? if needed
-        json_args = nil
-        if arguments
-          # Use the helper method to convert JsonValue to JSON::Any
-          json_args = {} of String => JSON::Any
-          arguments.each do |key, value|
-            json_args[key] = json_value_to_json_any(value)
-          end
-        end
+        # Use arguments directly as JsonObject
+        json_args = arguments
 
         # Create a context for the tool execution
         request_id = id.to_s

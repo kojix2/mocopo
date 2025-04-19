@@ -10,33 +10,33 @@ module MocoPo
     getter description : String
 
     # JSON Schema defining expected parameters
-    getter input_schema : Hash(String, JSON::Any)
+    getter input_schema : JsonObject
 
     # Argument builder
     getter argument_builder : ArgumentBuilder
 
     # Execution callback
-    @callback : Proc(Hash(String, JSON::Any)?, Context?, Hash(String, String | Array(Hash(String, String))))?
+    @callback : Proc(JsonObject?, Context?, Hash(String, String | Array(Hash(String, String))))?
 
     # List of allowed client IDs (for access control)
     property allowed_clients : Array(String)?
 
     # Initialize a new tool
-    def initialize(@name : String, @description : String, @input_schema : Hash(String, JSON::Any), &callback : (Hash(String, JSON::Any)?, Context?) -> Hash(String, String | Array(Hash(String, String))))
+    def initialize(@name : String, @description : String, @input_schema : JsonObject, &callback : (JsonObject?, Context?) -> Hash(String, String | Array(Hash(String, String))))
       @callback = callback
       @argument_builder = ArgumentBuilder.new
       @allowed_clients = nil
     end
 
     # Initialize a new tool without callback
-    def initialize(@name : String, @description : String, @input_schema : Hash(String, JSON::Any))
+    def initialize(@name : String, @description : String, @input_schema : JsonObject)
       @callback = nil
       @argument_builder = ArgumentBuilder.new
       @allowed_clients = nil
     end
 
     # Set the execution callback
-    def on_execute(&callback : (Hash(String, JSON::Any)?, Context?) -> Hash(String, String | Array(Hash(String, String))))
+    def on_execute(&callback : (JsonObject?, Context?) -> Hash(String, String | Array(Hash(String, String))))
       @callback = callback
       self
     end
@@ -84,15 +84,18 @@ module MocoPo
     end
 
     # Validate arguments against the input schema
-    private def validate_arguments(arguments : Hash(String, JSON::Any)?) : Array(String)
+    private def validate_arguments(arguments : JsonObject?) : Array(String)
       errors = [] of String
       schema = @input_schema
 
       # Only basic validation: type and required fields
-      if schema["type"]?.try(&.as_s) == "object"
+      schema_type = schema["type"]?
+      if schema_type.is_a?(String) && schema_type == "object"
         # Check required fields
-        if schema["required"]?.is_a?(JSON::Any) && schema["required"].as_a?
-          required_fields = schema["required"].as_a.map(&.as_s)
+        if schema["required"]? && schema["required"].is_a?(Array)
+          required_fields = schema["required"].as(Array).map do |field|
+            field.is_a?(String) ? field : field.to_s
+          end
           required_fields.each do |key|
             unless arguments && arguments.has_key?(key)
               errors << "Missing required argument: #{key}"
@@ -101,24 +104,24 @@ module MocoPo
         end
 
         # Type checking (string, number, boolean)
-        if arguments && schema["properties"]?.is_a?(JSON::Any) && schema["properties"].as_h?
-          properties = schema["properties"].as_h
+        if arguments && schema["properties"]? && schema["properties"].is_a?(Hash)
+          properties = schema["properties"].as(Hash)
           arguments.each do |key, value|
-            if properties.has_key?(key) && properties[key].as_h?
-              prop = properties[key].as_h
-              if prop["type"]?.is_a?(JSON::Any)
-                prop_type = prop["type"].as_s
+            if properties.has_key?(key) && properties[key].is_a?(Hash)
+              prop = properties[key].as(Hash)
+              if prop["type"]?
+                prop_type = prop["type"].is_a?(String) ? prop["type"].as(String) : prop["type"].to_s
                 case prop_type
                 when "string"
-                  unless value.as_s?
+                  unless value.is_a?(String)
                     errors << "Argument '#{key}' must be a string"
                   end
                 when "number"
-                  unless value.as_i? || value.as_f?
+                  unless value.is_a?(Int32) || value.is_a?(Float64)
                     errors << "Argument '#{key}' must be a number"
                   end
                 when "boolean"
-                  unless value.as_bool?
+                  unless value.is_a?(Bool)
                     errors << "Argument '#{key}' must be a boolean"
                   end
                 end
@@ -131,7 +134,7 @@ module MocoPo
     end
 
     # Execute the tool with the given arguments
-    def execute(arguments : Hash(String, JSON::Any)?, context : Context? = nil) : Hash(String, String | Array(Hash(String, String)))
+    def execute(arguments : JsonObject?, context : Context? = nil) : Hash(String, String | Array(Hash(String, String)))
       # Access control: check allowed_clients if set
       if @allowed_clients && context
         unless @allowed_clients.not_nil!.includes?(context.client_id)
@@ -201,7 +204,7 @@ module MocoPo
         "name"        => @name,
         "description" => @description,
         "inputSchema" => @input_schema,
-      } of String => String | Hash(String, JSON::Any)
+      } of String => String | JsonObject
     end
   end
 
@@ -227,7 +230,7 @@ module MocoPo
     # Execute a tool by name with rate limiting.
     # Returns an error if the tool is not found, or if the client exceeds the rate limit.
     # This method should be called by handlers to enforce security best practices.
-    def execute_tool(name : String, arguments : Hash(String, JSON::Any)?, context : Context? = nil) : Hash(String, String | Array(Hash(String, String)))
+    def execute_tool(name : String, arguments : JsonObject?, context : Context? = nil) : Hash(String, String | Array(Hash(String, String)))
       tool = @tools[name]?
       unless tool
         return {

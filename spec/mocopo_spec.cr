@@ -26,7 +26,12 @@ describe MocoPo::Server do
     prompt = server.register_prompt("greeting", "A greeting prompt") do |p|
       p.add_argument("name", true, "Name to greet")
       p.on_execute do |args|
-        name = args.try &.["name"]?.try &.as_s || "World"
+        name = "World"
+        if args && args["name"]?
+          name_value = args["name"]
+          name = name_value.is_a?(String) ? name_value : name_value.to_s
+        end
+
         [
           MocoPo::PromptMessage.new(
             "user",

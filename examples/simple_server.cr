@@ -15,15 +15,15 @@ weather_tool = MocoPo::Tool.new(
   name: "get_weather",
   description: "Get current weather information for a location",
   input_schema: {
-    "type"       => JSON::Any.new("object"),
-    "properties" => JSON::Any.new({
-      "location" => JSON::Any.new({
-        "type"        => JSON::Any.new("string"),
-        "description" => JSON::Any.new("City name or zip code"),
-      }),
-    }),
-    "required" => JSON::Any.new([JSON::Any.new("location")]),
-  }
+    "type"       => "object",
+    "properties" => {
+      "location" => {
+        "type"        => "string",
+        "description" => "City name or zip code",
+      } of String => MocoPo::JsonValue,
+    } of String => MocoPo::JsonValue,
+    "required" => ["location"] of MocoPo::JsonValue,
+  } of String => MocoPo::JsonValue
 )
 server.tool_manager.register(weather_tool)
 

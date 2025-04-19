@@ -134,7 +134,12 @@ describe MocoPo::Prompt do
   it "can set and execute a callback" do
     prompt = MocoPo::Prompt.new("test_prompt", "A test prompt")
     prompt.on_execute do |args|
-      name = args.try &.["name"]?.try &.as_s || "World"
+      name = "World"
+      if args && args.has_key?("name")
+        name_value = args["name"]
+        name = name_value.is_a?(String) ? name_value : name_value.to_s
+      end
+
       [
         MocoPo::PromptMessage.new(
           "user",
@@ -144,7 +149,7 @@ describe MocoPo::Prompt do
     end
 
     # Execute with arguments
-    args = {"name" => JSON::Any.new("Alice")} of String => JSON::Any
+    args = {"name" => "Alice"} of String => MocoPo::JsonValue
     messages = prompt.execute(args)
     messages.size.should eq(1)
     messages[0].role.should eq("user")

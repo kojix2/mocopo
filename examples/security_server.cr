@@ -75,31 +75,31 @@ spawn do
   puts "Error: #{result["isError"]}"
 
   # Valid input
-  result = server.tool_manager.execute_tool("echo", {"text" => JSON::Any.new("Hello, world!")}, regular_context)
+  result = server.tool_manager.execute_tool("echo", {"text" => "Hello, world!"} of String => MocoPo::JsonValue, regular_context)
   puts "Result: #{result["content"].as(Array)[0]["text"]}"
   puts "Error: #{result["isError"]}"
 
   # Test access control
   puts "\n=== Testing Access Control ==="
   # Regular client trying to access admin tool
-  result = server.tool_manager.execute_tool("admin_tool", {"command" => JSON::Any.new("list users")}, regular_context)
+  result = server.tool_manager.execute_tool("admin_tool", {"command" => "list users"} of String => MocoPo::JsonValue, regular_context)
   puts "Result: #{result["content"].as(Array)[0]["text"]}"
   puts "Error: #{result["isError"]}"
 
   # Admin client accessing admin tool
-  result = server.tool_manager.execute_tool("admin_tool", {"command" => JSON::Any.new("list users")}, admin_context)
+  result = server.tool_manager.execute_tool("admin_tool", {"command" => "list users"} of String => MocoPo::JsonValue, admin_context)
   puts "Result: #{result["content"].as(Array)[0]["text"]}"
   puts "Error: #{result["isError"]}"
 
   # Test output sanitization
   puts "\n=== Testing Output Sanitization ==="
-  result = server.tool_manager.execute_tool("html_tool", {"html" => JSON::Any.new("<script>alert('XSS')</script>")}, regular_context)
+  result = server.tool_manager.execute_tool("html_tool", {"html" => "<script>alert('XSS')</script>"} of String => MocoPo::JsonValue, regular_context)
   puts "Result: #{result["content"].as(Array)[0]["text"]}"
 
   # Test rate limiting
   puts "\n=== Testing Rate Limiting ==="
   6.times do |i|
-    result = server.tool_manager.execute_tool("echo", {"text" => JSON::Any.new("Call #{i + 1}")}, regular_context)
+    result = server.tool_manager.execute_tool("echo", {"text" => "Call #{i + 1}"} of String => MocoPo::JsonValue, regular_context)
     puts "Call #{i + 1} - Result: #{result["content"].as(Array)[0]["text"]}"
     puts "Call #{i + 1} - Error: #{result["isError"]}"
   end

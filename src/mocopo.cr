@@ -111,10 +111,10 @@ module MocoPo
     def register_tool(name : String, description : String, &block : Tool -> _)
       # Create a schema builder
       schema = {
-        "type"       => JSON::Any.new("object"),
-        "properties" => JSON::Any.new(Hash(String, JSON::Any).new),
-        "required"   => JSON::Any.new([] of JSON::Any),
-      }
+        "type"       => "object",
+        "properties" => {} of String => JsonValue,
+        "required"   => [] of JsonValue,
+      } of String => JsonValue
 
       # Create a tool
       tool = Tool.new(name, description, schema)
