@@ -134,9 +134,27 @@ module MocoPo
       return error_response(-32600, "Invalid Request") unless json["jsonrpc"]? == "2.0"
 
       # Extract request fields
-      id = json["id"]?
-      method = json["method"]?.try &.as_s
-      params = json["params"]?
+      id_value = json["id"]?
+      id = case id_value
+           when Int32, String, Nil
+             id_value
+           else
+             nil
+           end
+
+      method_value = json["method"]?
+      method = if method_value.is_a?(String)
+                 method_value
+               else
+                 nil
+               end
+
+      params_value = json["params"]?
+      params = if params_value.is_a?(Hash)
+                 params_value.as(Hash(String, JsonValue))
+               else
+                 nil
+               end
 
       # Handle method not found
       return error_response(-32601, "Method not found", id) unless method

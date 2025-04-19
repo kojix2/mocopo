@@ -1,5 +1,6 @@
 require "../transport"
 require "../json_rpc"
+require "../utils"
 require "json"
 
 module MocoPo
@@ -35,7 +36,12 @@ module MocoPo
             begin
               # Parse JSON-RPC message
               json = JSON.parse(line)
-              json_object = json.as_h.transform_keys(&.to_s)
+
+              # Convert to JsonObject
+              json_object = {} of String => JsonValue
+              json.as_h.each do |k, v|
+                json_object[k.to_s] = Utils.to_json_value(v)
+              end
 
               # Handle the message
               handle_message(json_object)

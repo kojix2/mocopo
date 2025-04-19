@@ -8,7 +8,9 @@ server = MocoPo::Server.new(
 
 # By default, the HTTP transport is created automatically
 # You can access it explicitly if needed
-http_transport = server.transport_manager.try &.@transports.find { |t| t.is_a?(MocoPo::HttpTransport) }
+http_transport = server.transport_manager.try do |manager|
+  manager.@transports.find { |t| t.is_a?(MocoPo::HttpTransport) }
+end
 
 # Register a sample tool
 weather_tool = MocoPo::Tool.new(
