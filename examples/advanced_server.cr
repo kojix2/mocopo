@@ -6,6 +6,16 @@ server = MocoPo::Server.new(
   version: "1.0.0"
 )
 
+# Create and register multiple transports
+http_transport = server.create_http_transport   # Default HTTP transport
+stdio_transport = server.create_stdio_transport # Standard input/output transport
+sse_transport = server.create_sse_transport     # Server-Sent Events transport
+
+puts "Configured multiple transports:"
+puts "- HTTP: POST to /mcp"
+puts "- SSE: GET /sse for server-to-client, POST to /messages for client-to-server"
+puts "- stdio: Reading from stdin, writing to stdout"
+
 # Register a tool with arguments and execution callback
 greet_tool = server.register_tool("greet", "Greet someone by name")
 greet_tool
@@ -89,4 +99,11 @@ puts "Starting MCP server on http://localhost:3000/mcp"
 puts "Press Ctrl+C to stop"
 puts "Registered tools: #{server.tool_manager.list.map(&.name).join(", ")}"
 puts "Registered resources: #{server.resource_manager.list.map(&.name).join(", ")}"
+puts "Active transports: HTTP, SSE, stdio"
+
+# Send a notification to all connected clients when the server starts
+if notification_manager = server.notification_manager
+  notification_manager.send_notification("server/started", {"message" => "Server started successfully"})
+end
+
 server.start

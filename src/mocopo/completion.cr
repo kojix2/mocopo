@@ -23,17 +23,24 @@ module MocoPo
       end
 
       # Create a reference from a JSON object
-      def self.from_json(json : Hash(String, JSON::Any)) : Reference?
-        type_str = json["type"]?.try &.as_s
+      def self.from_json(json : Hash(String, JsonValue)) : Reference?
+        # Convert to JSON string first
+        json_str = json.to_json
+
+        # Parse using JSON.parse
+        parsed = JSON.parse(json_str)
+
+        # Extract values
+        type_str = parsed["type"]?.try &.as_s
         return nil unless type_str
 
         case type_str
         when "ref/prompt"
-          name = json["name"]?.try &.as_s
+          name = parsed["name"]?.try &.as_s
           return nil unless name
           new(ReferenceType::Prompt, name)
         when "ref/resource"
-          uri = json["uri"]?.try &.as_s
+          uri = parsed["uri"]?.try &.as_s
           return nil unless uri
           new(ReferenceType::Resource, uri)
         else
@@ -55,9 +62,16 @@ module MocoPo
       end
 
       # Create an argument from a JSON object
-      def self.from_json(json : Hash(String, JSON::Any)) : Argument?
-        name = json["name"]?.try &.as_s
-        value = json["value"]?.try &.as_s
+      def self.from_json(json : Hash(String, JsonValue)) : Argument?
+        # Convert to JSON string first
+        json_str = json.to_json
+
+        # Parse using JSON.parse
+        parsed = JSON.parse(json_str)
+
+        # Extract values
+        name = parsed["name"]?.try &.as_s
+        value = parsed["value"]?.try &.as_s
         return nil unless name && value
         new(name, value)
       end

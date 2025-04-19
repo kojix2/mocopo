@@ -4,7 +4,7 @@ module MocoPo
     # Handle resources/list request
     def handle_list(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract cursor from params
-      cursor = params.try &.["cursor"]?.try &.as_s
+      cursor = get_string_param(params, "cursor")
 
       # Get all resources
       resources = @server.resource_manager.list
@@ -12,23 +12,38 @@ module MocoPo
       # Apply pagination
       page_resources, next_cursor = Pagination.paginate(resources, cursor)
 
-      # Convert to JSON-compatible format
-      resources_json = page_resources.map(&.to_json_object)
+      # Build response with explicit type
+      response = {} of String => JsonValue
 
-      # Build response
-      response = {"resources" => resources_json}
+      # Add resources array
+      resources_array = [] of JsonValue
+      page_resources.each do |resource|
+        # Convert resource.to_json_object to JsonValue
+        resource_json = resource.to_json_object
+        resource_json_str = resource_json.to_json
+        resource_json_value = JSON.parse(resource_json_str).as_h
+
+        # Convert to JsonValue
+        resource_value = {} of String => JsonValue
+        resource_json_value.each do |k, v|
+          resource_value[k] = Utils.to_json_value(v)
+        end
+
+        resources_array << resource_value
+      end
+      response["resources"] = resources_array
 
       # Add next cursor if there are more results
       response["nextCursor"] = next_cursor if next_cursor
 
-      # Return the list of resources
-      success_response(id, response)
+      # Return the list of resources with automatic conversion to JsonValue
+      safe_success_response(id, response)
     end
 
     # Handle resources/read request
     def handle_read(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract resource URI
-      uri = params.try &.["uri"]?.try &.as_s
+      uri = get_string_param(params, "uri")
 
       # Check if resource exists
       unless uri && @server.resource_manager.exists?(uri)
@@ -47,10 +62,28 @@ module MocoPo
         # Get the resource content with context
         content = resource.get_content(context)
 
-        # Return the content
-        success_response(id, {
-          "contents" => [content.to_json_object],
-        })
+        # Build response with explicit type
+        response = {} of String => JsonValue
+
+        # Add contents array
+        contents_array = [] of JsonValue
+
+        # Convert content.to_json_object to JsonValue
+        content_json = content.to_json_object
+        content_json_str = content_json.to_json
+        content_json_value = JSON.parse(content_json_str).as_h
+
+        # Convert to JsonValue
+        content_value = {} of String => JsonValue
+        content_json_value.each do |k, v|
+          content_value[k] = Utils.to_json_value(v)
+        end
+
+        contents_array << content_value
+        response["contents"] = contents_array
+
+        # Return the content with automatic conversion to JsonValue
+        success_response(id, response)
       rescue ex
         # Handle content retrieval errors
         error_response(-32603, "Error retrieving resource content: #{ex.message}", id)
@@ -60,7 +93,7 @@ module MocoPo
     # Handle resources/subscribe request
     def handle_subscribe(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract resource URI
-      uri = params.try &.["uri"]?.try &.as_s
+      uri = get_string_param(params, "uri")
 
       # Check if resource exists
       unless uri && @server.resource_manager.exists?(uri)
@@ -73,10 +106,12 @@ module MocoPo
       # Subscribe to the resource
       @server.resource_manager.subscribe(uri, subscriber_id)
 
-      # Return success
-      success_response(id, {
-        "subscribed" => true,
-      })
+      # Build response with explicit type
+      response = {} of String => JsonValue
+      response["subscribed"] = true
+
+      # Return success with automatic conversion to JsonValue
+      success_response(id, response)
     end
 
     # Handle a JSON-RPC request

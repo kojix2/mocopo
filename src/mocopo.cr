@@ -14,6 +14,8 @@ require "./mocopo/json_rpc"
 require "./mocopo/notifications"
 require "./mocopo/pagination"
 require "./mocopo/completion"
+require "./mocopo/transport"
+require "./mocopo/transport_manager"
 
 # MocoPo - A Crystal library for building MCP (Model Context Protocol) servers
 module MocoPo
@@ -42,6 +44,9 @@ module MocoPo
     # Notification manager
     getter notification_manager : NotificationManager?
 
+    # Transport manager
+    getter transport_manager : TransportManager?
+
     # Server name
     getter name : String
 
@@ -49,7 +54,7 @@ module MocoPo
     getter version : String
 
     # Initialize a new MCP server
-    def initialize(@name : String, @version : String, setup_routes : Bool = true)
+    def initialize(@name : String, @version : String, setup_routes : Bool = true, setup_transports : Bool = true)
       # Create managers
       @tool_manager = ToolManager.new
       @resource_manager = ResourceManager.new
@@ -70,17 +75,35 @@ module MocoPo
       # Create handler manager
       @handler_manager = HandlerManager.new(self)
 
-      # Setup routes
+      # Create transport manager
+      @transport_manager = TransportManager.new(self)
+
+      # Setup routes (for backward compatibility)
       setup_routes if setup_routes
+
+      # Setup default transports
+      setup_default_transports if setup_transports
     end
 
     # Start the server on the specified port
     def start(port = 3000)
+      # Start all transports
+      if transport_manager = @transport_manager
+        transport_manager.start_all
+      end
+
+      # Start Kemal (for backward compatibility)
       Kemal.run(port)
     end
 
     # Stop the server
     def stop
+      # Stop all transports
+      if transport_manager = @transport_manager
+        transport_manager.close_all
+      end
+
+      # Stop Kemal (for backward compatibility)
       Kemal.stop
     end
 
@@ -154,6 +177,51 @@ module MocoPo
       register_prompt(name, description) { |_| }
     end
 
+    # Setup default transports
+    private def setup_default_transports
+      # Create HTTP transport (for backward compatibility)
+      if transport_manager = @transport_manager
+        transport_manager.create_http_transport
+      end
+    end
+
+    # Create and register a transport
+    def register_transport(transport : Transport) : Transport
+      if transport_manager = @transport_manager
+        transport_manager.register(transport)
+      else
+        raise "Transport manager not initialized"
+      end
+    end
+
+    # Create and register an HTTP transport
+    def create_http_transport : HttpTransport
+      if transport_manager = @transport_manager
+        transport_manager.create_http_transport
+      else
+        raise "Transport manager not initialized"
+      end
+    end
+
+    # Create and register a stdio transport
+    def create_stdio_transport : StdioTransport
+      if transport_manager = @transport_manager
+        transport_manager.create_stdio_transport
+      else
+        raise "Transport manager not initialized"
+      end
+    end
+
+    # Create and register an SSE transport
+    def create_sse_transport : SseTransport
+      if transport_manager = @transport_manager
+        transport_manager.create_sse_transport
+      else
+        raise "Transport manager not initialized"
+      end
+    end
+
+    # Setup routes for backward compatibility
     private def setup_routes
       # JSON-RPC endpoint
       post "/mcp" do |env|

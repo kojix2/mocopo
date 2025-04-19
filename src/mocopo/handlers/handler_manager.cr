@@ -83,45 +83,129 @@ module MocoPo
         handler, method_symbol = @method_mappings[method]
 
         # Call handler method based on method symbol
-        case method_symbol
-        when :handle
+        if method_symbol == :handle
+          # All handlers must implement handle
           handler.handle(id, params)
-        when :handle_list
-          handler.handle_list(id, params)
-        when :handle_call
-          handler.handle_call(id, params)
-        when :handle_read
-          handler.handle_read(id, params)
-        when :handle_subscribe
-          handler.handle_subscribe(id, params)
-        when :handle_get
-          handler.handle_get(id, params)
-        when :handle_sample
-          handler.handle_sample(id, params)
-        when :handle_create_message
-          handler.handle_create_message(id, params)
-        when :handle_list_directory
-          handler.handle_list_directory(id, params)
-        when :handle_read_file
-          handler.handle_read_file(id, params)
-        when :handle_write_file
-          handler.handle_write_file(id, params)
-        when :handle_delete_file
-          handler.handle_delete_file(id, params)
-        when :handle_create_directory
-          handler.handle_create_directory(id, params)
-        when :handle_delete_directory
-          handler.handle_delete_directory(id, params)
-        when :handle_create
-          handler.handle_create(id, params)
-        when :handle_cancel
-          handler.handle_cancel(id, params)
-        when :handle_status
-          handler.handle_status(id, params)
-        when :handle_complete
-          handler.handle_complete(id, params)
         else
-          handler.handle(id, params)
+          # Call the specific handler method using a safer approach with responds_to?
+          case method_symbol
+          when :handle_list
+            # Handle each handler type individually to avoid type casting issues
+            if handler.is_a?(ToolsHandler)
+              handler.handle_list(id, params)
+            elsif handler.is_a?(ResourcesHandler)
+              handler.handle_list(id, params)
+            elsif handler.is_a?(PromptsHandler)
+              handler.handle_list(id, params)
+            elsif handler.is_a?(SamplingHandler)
+              handler.handle_list(id, params)
+            elsif handler.is_a?(RootsHandler)
+              handler.handle_list(id, params)
+            elsif handler.is_a?(CancellationHandler)
+              handler.handle_list(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_call
+            if handler.responds_to?(:handle_call)
+              handler.as(ToolsHandler).handle_call(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_read
+            if handler.responds_to?(:handle_read)
+              handler.as(ResourcesHandler).handle_read(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_subscribe
+            if handler.responds_to?(:handle_subscribe)
+              handler.as(ResourcesHandler).handle_subscribe(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_get
+            if handler.responds_to?(:handle_get)
+              handler.as(PromptsHandler).handle_get(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_sample
+            if handler.responds_to?(:handle_sample)
+              handler.as(SamplingHandler).handle_sample(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_create_message
+            if handler.responds_to?(:handle_create_message)
+              handler.as(SamplingHandler).handle_create_message(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_list_directory
+            if handler.responds_to?(:handle_list_directory)
+              handler.as(RootsHandler).handle_list_directory(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_read_file
+            if handler.responds_to?(:handle_read_file)
+              handler.as(RootsHandler).handle_read_file(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_write_file
+            if handler.responds_to?(:handle_write_file)
+              handler.as(RootsHandler).handle_write_file(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_delete_file
+            if handler.responds_to?(:handle_delete_file)
+              handler.as(RootsHandler).handle_delete_file(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_create_directory
+            if handler.responds_to?(:handle_create_directory)
+              handler.as(RootsHandler).handle_create_directory(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_delete_directory
+            if handler.responds_to?(:handle_delete_directory)
+              handler.as(RootsHandler).handle_delete_directory(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_create
+            if handler.responds_to?(:handle_create)
+              handler.as(CancellationHandler).handle_create(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_cancel
+            if handler.responds_to?(:handle_cancel)
+              handler.as(CancellationHandler).handle_cancel(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_status
+            if handler.responds_to?(:handle_status)
+              handler.as(CancellationHandler).handle_status(id, params)
+            else
+              handler.handle(id, params)
+            end
+          when :handle_complete
+            if handler.responds_to?(:handle_complete)
+              handler.as(CompletionHandler).handle_complete(id, params)
+            else
+              handler.handle(id, params)
+            end
+          else
+            # Fallback to handle method
+            handler.handle(id, params)
+          end
         end
       else
         # Method not found

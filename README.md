@@ -7,8 +7,11 @@ A Crystal library for building MCP (Model Context Protocol) servers.
 ## Overview
 
 MocoPo enables you to easily build MCP servers in Crystal.  
-It is based on Kemal for high-performance and lightweight HTTP handling,  
-and provides a DSL-style API for intuitive management and extension of tools, resources, and prompts.
+It provides a flexible transport layer supporting multiple communication methods (HTTP, SSE, stdio),  
+and offers a DSL-style API for intuitive management of tools, resources, and prompts.
+
+The library uses Kemal for HTTP handling but abstracts communication through a transport layer,  
+allowing for different communication mechanisms to be used interchangeably.
 
 ## Installation
 
@@ -22,6 +25,29 @@ and provides a DSL-style API for intuitive management and extension of tools, re
 
 2. Run `shards install`
 
+## Features
+
+- **Multiple Transport Support**:
+  - HTTP transport for web-based applications
+  - SSE (Server-Sent Events) transport for real-time notifications
+  - stdio transport for command-line tools and local integrations
+  - Extensible architecture for custom transports
+
+- **Tool Management**:
+  - Register and manage tools with rich argument schemas
+  - Support for nested arguments, arrays, and objects
+  - Execution callbacks with context
+
+- **Resource Management**:
+  - URI-based resource registration
+  - Content providers with dynamic generation
+  - MIME type support
+
+- **Notification System**:
+  - Real-time notifications across all transports
+  - List change notifications for tools, resources, and prompts
+  - Resource update notifications
+
 ## Usage
 
 ```crystal
@@ -32,6 +58,11 @@ server = MocoPo::Server.new(
   name: "MyMCPServer",
   version: "1.0.0"
 )
+
+# By default, HTTP transport is created automatically
+# You can create additional transports as needed
+stdio_transport = server.create_stdio_transport
+sse_transport = server.create_sse_transport
 
 # Register a tool with arguments and execution callback
 greet_tool = server.register_tool("greet", "Greet someone by name")
@@ -65,7 +96,7 @@ readme_resource.on_read do
   )
 end
 
-# Start the server on port 3000
+# Start the server on port 3000 (starts all transports)
 server.start
 ```
 

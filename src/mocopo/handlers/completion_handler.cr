@@ -16,9 +16,9 @@ module MocoPo
 
     # Handle completion/complete request
     def handle_complete(id : JsonRpcId, params : JsonRpcParams) : JsonObject
-      # Extract reference and argument
-      ref_json = params.try &.["ref"]?.try &.as_h
-      arg_json = params.try &.["argument"]?.try &.as_h
+      # Extract reference and argument using helper methods
+      ref_json = get_hash_param(params, "ref")
+      arg_json = get_hash_param(params, "argument")
 
       # Validate parameters
       unless ref_json && arg_json
@@ -50,10 +50,18 @@ module MocoPo
       # Get completion result
       result = Completion.complete(ref, arg, @server)
 
+      # Build response with explicit type
+      response = {} of String => JsonValue
+
+      # Convert result.to_json_object to JsonValue
+      result_json = result.to_json_object
+      result_json_str = result_json.to_json
+      result_json_value = JSON.parse(result_json_str)
+
+      response["completion"] = Utils.to_json_value(result_json_value)
+
       # Return the completion result
-      success_response(id, {
-        "completion" => result.to_json_object,
-      })
+      success_response(id, response)
     end
 
     # Handle a JSON-RPC request

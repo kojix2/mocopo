@@ -3,6 +3,14 @@ require "../src/mocopo"
 # Create a new MCP server
 server = MocoPo::Server.new("NotificationExample", "1.0.0")
 
+# Create and register multiple transports to demonstrate notifications across different transports
+http_transport = server.create_http_transport # Default HTTP transport
+sse_transport = server.create_sse_transport   # Server-Sent Events transport for real-time notifications
+
+puts "Configured transports for notifications:"
+puts "- HTTP: POST to /mcp (limited notification support)"
+puts "- SSE: GET /sse for server-to-client streaming notifications"
+
 # Register some initial tools
 server.register_tool("hello_world", "A simple hello world tool") do |tool|
   tool.argument_string("name", false, "Name to greet")
@@ -147,4 +155,6 @@ end
 # Start the server
 puts "Starting notification example server on http://localhost:3000"
 puts "Watch the console for notification events"
+puts "For SSE notifications, connect to http://localhost:3000/sse"
+puts "Notifications will be sent through all configured transports"
 server.start

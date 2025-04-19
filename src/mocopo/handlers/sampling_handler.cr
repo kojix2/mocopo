@@ -9,7 +9,7 @@ module MocoPo
       # Convert to JSON-compatible format
       methods_array = [] of JsonValue
       methods.each do |method|
-        methods_array << method.to_json_object
+        methods_array << method.to_json_object.as(JsonValue)
       end
 
       # Return the list of sampling methods
@@ -44,7 +44,10 @@ module MocoPo
         context = Context.new(request_id, client_id, @server)
 
         # Execute sampling
-        result = method.sample(text, parameters, context)
+        raw_result = method.sample(text, parameters, context)
+
+        # Convert result to JsonValue if needed
+        result = Utils.ensure_json_value(raw_result)
 
         # Return the result
         success_response(id, result)
@@ -82,11 +85,11 @@ module MocoPo
         # Create the message
         response = @server.sampling_manager.create_message(request, context)
 
-        # Return the result
-        success_response(id, response.to_json_object)
+        # Return the result with explicit conversion
+        success_response(id, response.to_json_object.as(JsonValue))
       rescue ex : SamplingError
         # Handle sampling errors
-        error_response(ex.code, ex.message, id)
+        error_response(ex.code, ex.message || "Unknown error", id)
       rescue ex
         # Handle other errors
         error_response(-32603, "Error creating message: #{ex.message}", id)
@@ -106,8 +109,10 @@ module MocoPo
       end
 
       # Check if temperature is valid (if provided)
-      if request.temperature && (request.temperature < 0.0 || request.temperature > 1.0)
-        return "Invalid temperature: must be between 0.0 and 1.0"
+      if temp = request.temperature
+        if temp < 0.0 || temp > 1.0
+          return "Invalid temperature: must be between 0.0 and 1.0"
+        end
       end
 
       # Check if include_context is valid (if provided)

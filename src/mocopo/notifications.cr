@@ -13,9 +13,22 @@ module MocoPo
       # Create a notification
       notification = JsonRpcNotification.new(method, params)
 
-      # In a real implementation, this would send the notification to all connected clients
-      # For now, we just log it to the console
-      puts "Broadcasting notification: #{notification.to_json_object.to_json}"
+      # Get the notification as a JSON object
+      json_object = notification.to_json_object
+
+      # Send the notification through all active transports
+      if transport_manager = @server.transport_manager
+        transport_manager.@transports.each do |transport|
+          begin
+            transport.send(json_object)
+          rescue ex : Exception
+            puts "Failed to send notification through transport: #{ex.message}"
+          end
+        end
+      end
+
+      # Log the notification (for backward compatibility)
+      puts "Broadcasting notification: #{json_object.to_json}"
     end
 
     # Send a prompts list changed notification

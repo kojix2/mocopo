@@ -4,7 +4,7 @@ module MocoPo
     # Handle initialize request
     def handle(id : JsonRpcId, params : JsonRpcParams) : JsonObject
       # Extract client protocol version
-      client_protocol_version = params.try &.["protocolVersion"]?.try &.as_s || "unknown"
+      client_protocol_version = get_string_param(params, "protocolVersion") || "unknown"
 
       # Check if we support the requested protocol version
       if client_protocol_version != PROTOCOL_VERSION
@@ -12,8 +12,8 @@ module MocoPo
         # For now, we just return our supported version
       end
 
-      # Return server capabilities and information
-      success_response(id, {
+      # Build response
+      result = {
         "protocolVersion" => PROTOCOL_VERSION,
         "capabilities"    => {
           "resources" => {
@@ -32,7 +32,10 @@ module MocoPo
           "name"    => @server.name,
           "version" => @server.version,
         },
-      })
+      }
+
+      # Return success response with automatic conversion to JsonValue
+      safe_success_response(id, result)
     end
   end
 end

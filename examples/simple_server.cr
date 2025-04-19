@@ -6,6 +6,10 @@ server = MocoPo::Server.new(
   version: "1.0.0"
 )
 
+# By default, the HTTP transport is created automatically
+# You can access it explicitly if needed
+http_transport = server.transport_manager.try &.@transports.find { |t| t.is_a?(MocoPo::HttpTransport) }
+
 # Register a sample tool
 weather_tool = MocoPo::Tool.new(
   name: "get_weather",
@@ -37,4 +41,5 @@ puts "Starting MCP server on http://localhost:3000/mcp"
 puts "Press Ctrl+C to stop"
 puts "Registered tools: #{server.tool_manager.list.map(&.name).join(", ")}"
 puts "Registered resources: #{server.resource_manager.list.map(&.name).join(", ")}"
+puts "Active transports: HTTP (default)"
 server.start
